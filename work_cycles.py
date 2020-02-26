@@ -24,13 +24,24 @@ HC = int(np.lcm.reduce(HC_r))
 # Horizon of the plannings creation
 
 # Variables
-X = [[[LpVariable("x"+str(i)+"_"+str(j)+"_"+str(r), 0, 1, cat=LpInteger)
-       for i in range(len(Shifts))] for j in range(len(Week))] for r in range(len(T))]
+X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
+       for i in range(len(Shifts))] for j in range(1, len(Week) * HC)] for e_r in range(Eff[r])] for r in range(len(T))]
 
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
+# Constraint 0
+for r in T:
+    for e_r in range(Eff[r]):
+        for i in range(len(Shifts)):
+            for j in range(1, HC_r[r]):
+                if HC_r[r] != HC:
+                    for k in range(1, HC // HC_r[r]):
+                        cador += X[i][j][e_r][r] == X[i][j + k*HC_r[r]][e_r][r]
+
+
+
 
 # Target Function
 
