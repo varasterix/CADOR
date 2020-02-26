@@ -32,6 +32,13 @@ cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
 
+# Constraint 1.c
+# cador += for t in T, for
+for t in T:
+       for e in Eff:
+              pass
+
+
 # Target Function
 
 # Solving
