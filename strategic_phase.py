@@ -1,4 +1,5 @@
 from pulp import *
+from time import time
 
 # Parameters
 Week = [i for i in range(7)]                            # days of week
@@ -35,7 +36,9 @@ cador += W[2] >= \
 cador += lpSum([W[i] * costs[i] for i in T]) - W[0]     # minimization of the global cost and maximization of full time
 
 # Solving
+start_time = time()
 status = cador.solve()
+print("Problem solved in " + str(round(time()-start_time, 3)) + " seconds")
 print(LpStatus[status])
 for i in range(len(W)):
     print("Workforce for type of contract " + str(int(ratios[i]*100)) + "% : " + str(int(value(W[i]))))
