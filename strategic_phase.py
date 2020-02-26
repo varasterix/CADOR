@@ -15,7 +15,7 @@ P80 = 0.2                                               # proportion of 80% cont
 a = [0 for i in T]                                      # number of employees already affected for each type of contract
 
 # Variables
-W = [LpVariable("W", 0, cat=int) for i in T]            # workforce of every type of contract
+W = [LpVariable("W"+str(i), 0, cat=int) for i in T]     # workforce of every type of contract
 
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
