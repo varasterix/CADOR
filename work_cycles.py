@@ -8,6 +8,7 @@ T = [i for i in range(7)]                               # types of contracts
 Night_Shifts = ["N"]                                    # types of night shifts
 Day_Shifts = ["M", "J", "S"]                            # types of day shifts
 Off_Shifts = ["Jca", "Repos"]                           # types of off shifts
+Shifts = Night_Shifts + Day_Shifts + Off_Shifts
 
 # Instance dependant Parameters
 beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
@@ -16,21 +17,31 @@ duration_D = {"M": 7.5, "J": 7.5, "S": 7.5, "N": 10}
 breakDuration = {"M": 0.5, "J": 0.5, "S": 0.5}
 N = [{"M": 2, "J": 1, "S": 2, "N": 1} for j in Week]    # workforce Needs for every shifts of every day in week
 Eff = [3 for i in T]                                    # number of employees already affected for each type of contract
-# Work cycles length
+# Work cycles length (not a variable in this model)
 HC_r = [eff for eff in Eff]
 # Overall work cycle length
 HC = int(np.lcm.reduce(HC_r))
 # Horizon of the plannings creation
 
 # Variables
-X = [[[LpVariable("x"+str(i)+"_"+str(j)+"_"+str(r), 0, 1, LpInteger)
-       for i in range(4)] for j in range(7)] for r in range(7)]
-HCR = [LpVariable("Hc"+str(i), 0, cat=LpInteger) for i in T]
+X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
+       for i in range(len(Shifts))] for j in range(1, len(Week) * HC)] for e_r in range(Eff[r])] for r in range(len(T))]
 
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
+# Constraint 0
+for r in T:
+    for e_r in range(Eff[r]):
+        for i in range(len(Shifts)):
+            for j in range(1, HC_r[r]):
+                if HC_r[r] != HC:
+                    for k in range(1, HC // HC_r[r]):
+                        cador += X[i][j][e_r][r] == X[i][j + k*HC_r[r]][e_r][r]
+
+
+
 
 # Constraint 1.c
 # cador += for t in T, for
