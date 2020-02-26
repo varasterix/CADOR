@@ -16,6 +16,7 @@ a = [0 for i in T]                                      # number of employees al
 
 # Variables
 W = [LpVariable("W", 0, cat=int) for i in T]            # workforce of every type of contract
+
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
 
