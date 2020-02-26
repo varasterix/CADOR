@@ -6,6 +6,9 @@ from time import time
 # Instance dependant Parameters
 
 # Variables
+X = [[[LpVariable("x"+str(i)+"_"+str(j)+"_"+str(r), 0, 1, LpInteger)
+       for i in range(4)] for j in range(7)] for r in range(7)]
+HCR = [LpVariable("Hc"+str(i), 0, cat=LpInteger) for i in range(7)]
 
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
