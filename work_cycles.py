@@ -31,6 +31,9 @@ X = [[[LpVariable("x"+str(i)+"_"+str(j)+"_"+str(r), 0, 1, cat=LpInteger)
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
+for i in range(len(Shifts)):
+       for j in range(len(Week)*HC):
+              cador += lpSum([lpSum([X[i][j][r] for er in range(Eff[r])]) for r in T]) >= N[j][Shifts[i]]
 
 # Target Function
 
