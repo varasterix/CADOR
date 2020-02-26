@@ -38,4 +38,4 @@ cador += lpSum([W[i] * costs[i] for i in T]) - W[0]     # minimization of the gl
 status = cador.solve()
 print(LpStatus[status])
 for i in range(len(W)):
-    print("Workforce for type of contract " + str(i) + ": " + str(value(W[i])))
+    print("Workforce for type of contract " + str(int(ratios[i]*100)) + "% : " + str(int(value(W[i]))))
