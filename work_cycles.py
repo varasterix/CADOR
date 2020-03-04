@@ -75,10 +75,11 @@ for r in T:
 
 # Constraint 1.e: same shift on saturday as on sunday
 for r in T:
-    for er in range(Eff[r]):
-        for k in range(er):
+    for e_r in range(Eff[r]):
+        for k in range(e_r):
             for i in range(len(Shifts)):
-                cador += X[i][k*5][er] == X[i][k*6][er]
+                cador += X[i][k*5][e_r] == X[i][k * 6][e_r]
+
 
 # Target Function
 
