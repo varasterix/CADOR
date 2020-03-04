@@ -58,9 +58,8 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, HC_r[r] - 1):
-            cador += lpSum(X[Shifts[s]][j + 1][e_r] for s in {**Day_Shifts, **Night_Shifts}) <= \
-                     lpSum(X[Shifts[s]][j][e_r] for s in {**Day_Shifts, **Night_Shifts}) + \
-                     lpSum(X[Shifts[s]][j + 2][e_r] for s in {**Day_Shifts, **Night_Shifts})
+            for s in {**Day_Shifts, **Night_Shifts}:
+                cador += lpSum(X[Shifts[s]][j+1][e_r]) <= lpSum(X[Shifts[s]][j][e_r]) + lpSum(X[Shifts[s]][j+2][e_r])
 
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
@@ -73,7 +72,9 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for i in {**Day_Shifts, **Night_Shifts}:
-            pass
+            for n in range(1, HC_r[r]):
+                j = 5 * n
+                cador += X[i][j][e_r] == X[i][j+1][e_r]
 
 # Target Function
 
