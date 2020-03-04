@@ -72,7 +72,7 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for i in {**Day_Shifts, **Night_Shifts}:
-            for n in range(1, HC_r[r]):
+            for n in range(1, HC_r[r]+1):
                 j = 5 * n
                 cador += X[i][j][e_r] == X[i][j+1][e_r]
 
