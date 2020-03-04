@@ -32,6 +32,7 @@ X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
+
 # Constraint 0: Repetition of the patterns for each type of contract
 for r in T:
     for e_r in range(Eff[r]):
@@ -79,6 +80,14 @@ for r in T:
         for k in range(er):
             for i in range(len(Shifts)):
                 cador += X[i][k*5][er] == X[i][k*6][er]
+
+# Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
+for r in T:
+    for e_r in range(Eff[r]):
+        for k in range(er):
+        for j in range(1, len(Week)*HC_r[r] - 4):
+
+
 
 # Target Function
 
