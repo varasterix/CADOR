@@ -61,9 +61,10 @@ for r in T:
 # Constraint 1.c: no single work day
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week)*HC_r[r]-1):
-            for s in {**Day_Shifts, **Night_Shifts}:
-                cador += lpSum(X[Shifts[s]][j+1][e_r]) <= lpSum(X[Shifts[s]][j][e_r]) + lpSum(X[Shifts[s]][j+2][e_r])
+        for j in range(1, HC_r[r] - 1):
+            cador += lpSum(X[Shifts[s]][j + 1][e_r] for s in {**Day_Shifts, **Night_Shifts}) <= \
+                     lpSum(X[Shifts[s]][j][e_r] for s in {**Day_Shifts, **Night_Shifts}) + \
+                     lpSum(X[Shifts[s]][j + 2][e_r] for s in {**Day_Shifts, **Night_Shifts})
 
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
@@ -75,16 +76,24 @@ for r in T:
 # Constraint 1.e: same shift on Saturdays and Sundays
 for r in T:
     for e_r in range(Eff[r]):
-        for i in {**Day_Shifts, **Night_Shifts}:
+        for s in {**Day_Shifts, **Night_Shifts}:
             for n in range(1, HC_r[r]+1):
                 j = 5 * n
-                cador += X[i][j][e_r] == X[i][j+1][e_r]
+                cador += X[s][j][e_r] == X[s][j+1][e_r]
+
+# Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
+for r in T:
+    for e_r in range(Eff[r]):
+        for q in range(HC_r[r]):
+            cador += lpSum([lpSum([X[s][1 + q + len(Week) + k][e_r] for k in range(len(Week))]) * duration_D[s]
+                            for s in {**Day_Shifts, **Night_Shifts}]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in T:
-    for e_r in range(Eff[r]):
-        for j in range(1, len(Week)*(e_r-1)+2):
-            cador += lpSum([lpSum([X[i][j+k][e_r] for k in range(7)]) for i in Shifts]) <= 45
+    for er in range(Eff[r]):
+        for j in range(0, len(Week)*(er-1)+1):
+            cador += lpSum([lpSum([X[i][j+k][er]*duration_D[i] for k in range(7)])
+                            for i in {**Night_Shifts, **Day_Shifts}]) <= 48
 
 # Constraints 2.b:
 # Constraint 2.b.o: Definition of the variables t (beginning time)
