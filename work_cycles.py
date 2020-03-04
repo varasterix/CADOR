@@ -31,6 +31,7 @@ X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
+
 # Constraint 0
 for r in T:
     for e_r in range(Eff[r]):
@@ -41,13 +42,18 @@ for r in T:
                         cador += X[i][j][e_r][r] == X[i][j + k*HC_r[r]][e_r][r]
 
 
-
-
 # Constraint 1.c
-# cador += for t in T, for
-for t in T:
-       for e in Eff:
-              pass
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, HC_r[r] - 1):
+            temp1 = 0
+            temp2 = 0
+            temp3 = 0
+            for i in (Day_Shifts + Night_Shifts):
+                temp1 += X[i][j + 1][e_r]
+                temp2 += X[i][j][e_r]
+                temp3 += X[i][j + 2][e_r]
+            cador += temp1 <= temp2 + temp3
 
 
 # Target Function
