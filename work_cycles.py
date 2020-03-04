@@ -31,7 +31,7 @@ X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
-# Constraint 0 : Repetition of the patterns for each type of contract
+# Constraint 0: Repetition of the patterns for each type of contract
 for r in T:
     for e_r in range(Eff[r]):
         for i in range(len(Shifts)):
@@ -40,9 +40,26 @@ for r in T:
                     for k in range(1, HC // HC_r[r]):
                         cador += X[i][j][e_r][r] == X[i][j + k*HC_r[r]][e_r][r]
 
+# Constraint 1.a: respect of needs
+for i, shift in enumerate(Shifts):
+    for j in range(len(Week)):
+        for k in range(HC):
+            cador += lpSum([lpSum([X[i][j][r] for er in range(Eff[r])]) for r in T]) >= N[j+k*len(Week)][shift]
 
+# Constraint 1.c: no single work day
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, HC_r[r] - 1):
+            temp1 = 0
+            temp2 = 0
+            temp3 = 0
+            for i in (Day_Shifts + Night_Shifts):
+                temp1 += X[i][j + 1][e_r]
+                temp2 += X[i][j][e_r]
+                temp3 += X[i][j + 2][e_r]
+            cador += temp1 <= temp2 + temp3
 
-# Constraint 1.d : Maximum of 5 consecutive days of work
+# Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week)*HC_r[r] - 4):
