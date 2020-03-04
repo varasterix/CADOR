@@ -88,8 +88,8 @@ for r in T:
 for r in T:
     for er in range(Eff[r]):
         for j in range(0, len(Week)*(er-1)+1):
-            cador += lpSum([lpSum([X[i][j+k][er]*duration_D[i] for k in range(7)])
-                            for i in {**Night_Shifts, **Day_Shifts}]) <= 48
+            cador += lpSum([lpSum([X[i][j+k][er]*duration_D[shift] for k in range(7)])
+                            for i, shift in enumerate({**Night_Shifts, **Day_Shifts})]) <= 48
 
 # Target Function
 
