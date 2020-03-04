@@ -3,11 +3,11 @@ import numpy as np
 from time import time
 
 # Parameters
-Week = [i for i in range(7)]                            # days of week
-T = [i for i in range(7)]                               # types of contracts
-Night_Shifts = {"N": 3}                                 # types of night shifts
-Day_Shifts = {"M": 0, "J": 1, "S": 2}                   # types of day shifts
-Off_Shifts = {"Jca": 4, "Repos": 5}                     # types of off shifts
+Week = [i for i in range(7)]  # days of week
+T = [i for i in range(7)]  # types of contracts
+Night_Shifts = {"N": 3}  # types of night shifts
+Day_Shifts = {"M": 0, "J": 1, "S": 2}  # types of day shifts
+Off_Shifts = {"Jca": 4, "Repos": 5}  # types of off shifts
 Shifts = {**Night_Shifts, **Day_Shifts, **Off_Shifts}
 
 # Instance dependant Parameters
@@ -15,8 +15,8 @@ beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
 completionTime_c = {"M": 14, "J": 17, "S": 22, "N": 6}
 duration_D = {"M": 8, "J": 8, "S": 8, "N": 10}
 breakDuration = {"M": 0.5, "J": 0.5, "S": 0.5}
-N = [{"M": 2, "J": 1, "S": 2, "N": 1} for j in Week]    # workforce Needs for every shifts of every day in week
-Eff = [3 for i in T]                                    # number of employees already affected for each type of contract
+N = [{"M": 2, "J": 1, "S": 2, "N": 1} for j in Week]  # workforce Needs for every shifts of every day in week
+Eff = [3 for i in T]  # number of employees already affected for each type of contract
 # Work cycles length (not a variable in this model)
 HC_r = [eff for eff in Eff]
 # Overall work cycle length
@@ -31,6 +31,8 @@ t = [[[LpVariable("t" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInt
        for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 c = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
        for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
+rest = [[[LpVariable("r" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
+          for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
@@ -55,7 +57,7 @@ for i, shift in enumerate(Shifts):
 # Constraint 1.b: only one shift per day per person
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week)*HC_r[r]):
+        for j in range(1, len(Week) * HC_r[r]):
             cador += lpSum([X[i][j][r] for i in range(len(Shifts))]) == 1
 
 # Constraint 1.c: no single work day
@@ -69,7 +71,7 @@ for r in T:
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week)*HC_r[r] - 4):
+        for j in range(1, len(Week) * HC_r[r] - 4):
             cador += lpSum([lpSum([X[Shifts[s]][j + k][e_r][r]
                                    for s in {**Day_Shifts, **Night_Shifts}]) for k in range(0, 6)]) <= 5
 
@@ -77,9 +79,9 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for s in {**Day_Shifts, **Night_Shifts}:
-            for n in range(1, HC_r[r]+1):
+            for n in range(1, HC_r[r] + 1):
                 j = 5 * n
-                cador += X[s][j][e_r] == X[s][j+1][e_r]
+                cador += X[s][j][e_r] == X[s][j + 1][e_r]
 
 # Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
 for r in T:
@@ -90,9 +92,9 @@ for r in T:
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in T:
-    for er in range(Eff[r]):
-        for j in range(0, len(Week)*(er-1)+1):
-            cador += lpSum([lpSum([X[i][j+k][er]*duration_D[i] for k in range(7)])
+    for e_r in range(Eff[r]):
+        for j in range(0, len(Week) * (e_r - 1) + 1):
+            cador += lpSum([lpSum([X[i][j + k][e_r] * duration_D[i] for k in range(7)])
                             for i in {**Night_Shifts, **Day_Shifts}]) <= 48
 
 # Constraints 2.b:
@@ -111,9 +113,21 @@ for r in T:
             cador += c[j][e_r][r] == lpSum([(beginningTime_t[Shifts[s]] + duration_D[Shifts[s]])
                                             * X[Shifts[s]][j][e_r][r] for s in {**Day_Shifts, **Night_Shifts}])
 
+# Constraint 2.b.ooo: Definition of the variables r (rest/off day or not)
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, len(Week) * HC_r[r] + 1):
+            cador += rest[j][e_r][r] == 1 - lpSum([X[Shifts[s]][j][e_r][r] for s in {**Day_Shifts, **Night_Shifts}])
+
 # Constraint 2.b.i: Minimum daily rest time of 12 hours
 
 # Constraint 2.b.ii: Minimum of 36 consecutive hours for weekly rest (sliding)
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, len(Week) * HC_r[r] - 5):
+            cador += lpSum([rest[j + k][e_r][r] * ((24 - c[j + k - 1][e_r][r]) + t[j + k + 1][e_r][r] >= (36 - 24))
+                            + (24 + t[j + k][e_r][r] - c[j + k - 1][e_r][r] >= 36) for k in range(5)]) \
+                     + (24 + t[j + 5][e_r][r] - c[j + 4][e_r][r] >= 36) >= 1
 
 # Target Function
 
