@@ -65,15 +65,24 @@ for r in T:
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week)*HC_r[r] - 4):
+        for j in range(1, len(Week)*HC_r[r]-4):
             cador += lpSum([lpSum([X[Shifts[s]][j + k][e_r][r]
                                    for s in {**Day_Shifts, **Night_Shifts}]) for k in range(0, 6)]) <= 5
 
 # Constraint 1.e: same shift on Saturdays and Sundays
 for r in T:
     for e_r in range(Eff[r]):
-        for i in {**Day_Shifts, **Night_Shifts}:
-            pass
+        for s in {**Day_Shifts, **Night_Shifts}:
+            for n in range(1, HC_r[r]+1):
+                j = 5 * n
+                cador += X[s][j][e_r] == X[s][j+1][e_r]
+
+# Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
+for r in T:
+    for e_r in range(Eff[r]):
+        for q in range(HC_r[r]):
+            cador += lpSum([lpSum([X[s][1 + q + len(Week) + k][e_r] for k in range(len(Week))]) * duration_D[s]
+                            for s in {**Day_Shifts, **Night_Shifts}]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in T:
