@@ -25,7 +25,8 @@ HC = int(np.lcm.reduce(HC_r))
 
 # Variables
 X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
-       for i in range(len(Shifts))] for j in range(1, len(Week) * HC)] for e_r in range(Eff[r])] for r in range(len(T))]
+        for i in range(len(Shifts))] for j in range(1, len(Week) * HC)] for e_r in range(Eff[r])] for r in
+     range(len(T))]
 
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
@@ -38,13 +39,19 @@ for r in T:
             for j in range(1, HC_r[r]):
                 if HC_r[r] != HC:
                     for k in range(1, HC // HC_r[r]):
-                        cador += X[i][j][e_r][r] == X[i][j + k*HC_r[r]][e_r][r]
+                        cador += X[i][j][e_r][r] == X[i][j + k * HC_r[r]][e_r][r]
 
 # Constraint 1.a: respect of needs
 for i, shift in enumerate(Shifts):
     for j in range(len(Week)):
         for k in range(HC):
-            cador += lpSum([lpSum([X[i][j][r] for er in range(Eff[r])]) for r in T]) >= N[j+k*len(Week)][shift]
+            cador += lpSum([lpSum([X[i][j][r] for e_r in range(Eff[r])]) for r in T]) >= N[j + k * len(Week)][shift]
+
+# Constraint 1.b: only one shift per day per person
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, len(Week)*HC_r[r]):
+            cador += lpSum([X[i][j][r] for i in range(len(Shifts))]) == 1
 
 # Constraint 1.c: no single work day
 for r in T:
@@ -78,5 +85,5 @@ for r in T:
 # Solving
 start_time = time()
 status = cador.solve()
-print("Problem solved in " + str(round(time()-start_time, 3)) + " seconds")
+print("Problem solved in " + str(round(time() - start_time, 3)) + " seconds")
 print(LpStatus[status])
