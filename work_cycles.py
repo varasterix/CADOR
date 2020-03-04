@@ -57,7 +57,7 @@ for r in T:
 for (s, i) in Shifts:
     for j in range(len(Week)):
         for k in range(HC):
-            cador += lpSum([lpSum([X[i][j][r] for e_r in range(Eff[r])]) for r in T]) >= N[1 + j + k * len(Week)][i]
+            cador += lpSum([lpSum([X[i][j][e_r][r] for e_r in range(Eff[r])]) for r in T]) >= N[1 + j + k * len(Week)][i]
 
 # Constraint 1.b: only one shift per day per person
 for r in T:
@@ -92,14 +92,14 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for q in range(HC_r[r]):
-            cador += lpSum([lpSum([X[Shifts[s]][q + len(Week) + k][e_r] * duration_D[Shifts[s]]
+            cador += lpSum([lpSum([X[Shifts[s]][q + len(Week) + k][e_r][r] * duration_D[Shifts[s]]
                                    for k in range(len(Week))]) for s in {**Day_Shifts, **Night_Shifts}]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(len(Week) * (e_r - 1) + 1):
-            cador += lpSum([lpSum([X[Shifts[s]][j + k][e_r] * duration_D[Shifts[s]]
+            cador += lpSum([lpSum([X[Shifts[s]][j + k][e_r][r] * duration_D[Shifts[s]]
                                    for k in range(7)]) for s in {**Night_Shifts, **Day_Shifts}]) <= 48
 
 # Constraints 2.b:
@@ -143,16 +143,16 @@ for r in T:
 # full time contracts
 for e1 in range(Eff[0]):
     for j in range(len(Week) * (HC_r[0] - 2) + 1):
-        cador += lpSum([X[Shifts["Repos"]][j + k][e1] for k in range(2 * len(Week))]) >= 4
-        cador += lpSum([X[Shifts["Repos"]][j + 2 * k][e1] == X[Shifts["Repos"]][j + 2 * k + 1][e1]
+        cador += lpSum([X[Shifts["Repos"]][j + k][e1][0] for k in range(2 * len(Week))]) >= 4
+        cador += lpSum([X[Shifts["Repos"]][j + 2 * k][e1][0] == X[Shifts["Repos"]][j + 2 * k + 1][e1][0]
                         for k in range(len(Week))]) >= 1
-        cador += lpSum([X[Shifts["Repos"]][j + k][e1] for k in range(2 * len(Week)) if j + k == 6]) >= 1
+        cador += lpSum([X[Shifts["Repos"]][j + k][e1][0] for k in range(2 * len(Week)) if j + k == 6]) >= 1
 
 # Soft constraints
 
 # Constraint 1: number of Jca at least equals to 20% of total number of staff members
 for j in range(len(Week) * HC):
-    cador += lpSum([lpSum([X[Shifts["Jca"]][j][e_r] for e_r in range(Eff[r])]) for r in T]) \
+    cador += lpSum([lpSum([X[Shifts["Jca"]][j][e_r][0] for e_r in range(Eff[r])]) for r in T]) \
              <= 0.2 * lpSum([lpSum([e_r for e_r in range(Eff[r])]) for r in T])
 
 # Target Function
