@@ -89,7 +89,6 @@ for r in T:
         for q in range(HC_r[r]):
             cador += lpSum([lpSum([X[s][q + len(Week) + k][e_r] * (duration_D[s] - breakDuration[s]) for k in range(len(Week))])
                             for s in {**Day_Shifts, **Night_Shifts}]) <= 45
-            # prendre en compte le break dans les 8h
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in T:
