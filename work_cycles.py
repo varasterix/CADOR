@@ -46,6 +46,12 @@ for i, shift in enumerate(Shifts):
         for k in range(HC):
             cador += lpSum([lpSum([X[i][j][r] for er in range(Eff[r])]) for r in T]) >= N[j+k*len(Week)][shift]
 
+# Constraint 1.e: same shift on saturday as on sunday
+for r in T:
+    for er in range(Eff[r]):
+        for k in range(er):
+            for i in range(len(Shifts)):
+                cador += X[i][k*5][er] == X[i][k*6][er]
 
 # Target Function
 
