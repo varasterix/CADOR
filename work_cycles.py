@@ -51,14 +51,9 @@ for i, shift in enumerate(Shifts):
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, HC_r[r] - 1):
-            temp1 = 0
-            temp2 = 0
-            temp3 = 0
-            for s in {**Day_Shifts, **Night_Shifts}:
-                temp1 += X[Shifts[s]][j + 1][e_r]
-                temp2 += X[Shifts[s]][j][e_r]
-                temp3 += X[Shifts[s]][j + 2][e_r]
-            cador += temp1 <= temp2 + temp3
+            cador += lpSum(X[Shifts[s]][j + 1][e_r] for s in {**Day_Shifts, **Night_Shifts}) <= \
+                     lpSum(X[Shifts[s]][j][e_r] for s in {**Day_Shifts, **Night_Shifts}) + \
+                     lpSum(X[Shifts[s]][j + 2][e_r] for s in {**Day_Shifts, **Night_Shifts})
 
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
@@ -70,9 +65,8 @@ for r in T:
 # Constraint 1.e: same shift on Saturdays and Sundays
 for r in T:
     for e_r in range(Eff[r]):
-        for i in (Day_Shifts + Night_Shifts):
-            for j in range(0):
-                pass
+        for i in {**Day_Shifts, **Night_Shifts}:
+            pass
 
 # Target Function
 
