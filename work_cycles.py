@@ -52,21 +52,21 @@ for r in T:
 for i, shift in enumerate(Shifts):
     for j in range(len(Week)):
         for k in range(HC):
-            cador += lpSum([lpSum([X[i][j][r] for e_r in range(Eff[r])]) for r in T]) >= N[1 + j + k * len(Week)][shift]
+            cador += lpSum([lpSum([X[i][j][e_r][r] for e_r in range(Eff[r])]) for r in T]) >= N[j][shift]
 
 # Constraint 1.b: only one shift per day per person
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r]):
-            cador += lpSum([X[i][j][r] for i in range(len(Shifts))]) == 1
+            cador += lpSum([X[i][j][e_r][r] for i in range(len(Shifts))]) == 1
 
 # Constraint 1.c: no single work day
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] - 1):
-            cador += lpSum([X[Shifts[s]][j + 1][e_r] for s in {**Day_Shifts, **Night_Shifts}]) <= \
-                     lpSum([X[Shifts[s]][j][e_r] for s in {**Day_Shifts, **Night_Shifts}]) + \
-                     lpSum([X[Shifts[s]][j + 2][e_r] for s in {**Day_Shifts, **Night_Shifts}])
+            cador += lpSum([X[Shifts[s]][j + 1][e_r][r] for s in {**Day_Shifts, **Night_Shifts}]) <= \
+                     lpSum([X[Shifts[s]][j][e_r][r] for s in {**Day_Shifts, **Night_Shifts}]) + \
+                     lpSum([X[Shifts[s]][j + 2][e_r][r] for s in {**Day_Shifts, **Night_Shifts}])
 
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
@@ -81,21 +81,21 @@ for r in T:
         for i in {**Day_Shifts, **Night_Shifts}:
             for n in range(1, HC_r[r] + 1):
                 j = 5 * n
-                cador += X[i][j][e_r] == X[i][j + 1][e_r]
+                cador += X[i][j][e_r][r] == X[i][j + 1][e_r][r]
 
 # Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
 for r in T:
     for e_r in range(Eff[r]):
         for q in range(HC_r[r]):
-            cador += lpSum([lpSum([X[s][q + len(Week) + k][e_r] * duration_D[s] for k in range(len(Week))])
+            cador += lpSum([lpSum([X[s][q + len(Week) + k][e_r][r] * duration_D[s] for k in range(len(Week))])
                             for s in {**Day_Shifts, **Night_Shifts}]) <= 45
             # prendre en compte le break dans les 8h
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in T:
-    for er in range(Eff[r]):
-        for j in range(0, len(Week) * (er - 1) + 1):
-            cador += lpSum([lpSum([X[i][j + k][er] * duration_D[shift] for k in range(7)])
+    for e_r in range(Eff[r]):
+        for j in range(0, len(Week) * (e_r - 1) + 1):
+            cador += lpSum([lpSum([X[i][j + k][e_r][r] * duration_D[shift] for k in range(7)])
                             for i, shift in enumerate({**Night_Shifts, **Day_Shifts})]) <= 48
 
 # Constraints 2.b:
@@ -127,21 +127,23 @@ for r in T:
 # full time contracts
 for e1 in range(Eff[0]):
     for j in range(len(Week) * (HC_r[0] - 2) + 1):
-        cador += lpSum([lpSum([X[i][j+k][e1] for k in range(2 * len(Week))]) for i in range(Off_Shifts["Repos"])]) >= 4
-        cador += lpSum([lpSum([X[i][j + 2 * k][e1] == X[i][j + 2 * k + 1][e1] for k in range(len(Week))])
+        cador += lpSum([lpSum([X[i][j+k][e1][0] for k in range(2 * len(Week))])
+                        for i in range(Off_Shifts["Repos"])]) >= 4
+        cador += lpSum([lpSum([X[i][j + 2 * k][e1][0] == X[i][j + 2 * k + 1][e1][0] for k in range(len(Week))])
                         for i in range(Off_Shifts["Repos"])]) >= 1
-        cador += lpSum([lpSum([X[i][j+k][e1] for k in range(2 * len(Week)) if j+k == 6])
+        cador += lpSum([lpSum([X[i][j+k][e1][0] for k in range(2 * len(Week)) if j+k == 6])
                         for i in range(Off_Shifts["Repos"])]) >= 1
 
 # Soft constraints
 
 # Constraint 1: number of Jca at least equals to 20% of total number of staff members
 for j in range(1, len(Week) * HC):
-    cador += lpSum([lpSum([lpSum([X[i][j][e_r] for i in {Off_Shifts["Jca"]}]) for e_r in range(Eff[r])]) for r in T]) \
-             <= 0.2 * lpSum([lpSum([e_r for e_r in range(Eff[r])]) for r in T])
+    cador += lpSum([lpSum([lpSum([X[i][j][e_r][r] for i in {Off_Shifts["Jca"]}]) for e_r in range(Eff[r])])
+                    for r in T]) <= 0.2 * lpSum([lpSum([e_r for e_r in range(Eff[r])]) for r in T])
 
 
 # Target Function
+cador += 1
 
 # Solving
 start_time = time()
