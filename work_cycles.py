@@ -25,8 +25,8 @@ HC = int(np.lcm.reduce(HC_r))
 
 # Variables
 X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
-        for i in range(len(Shifts))] for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in
-     range(len(T))]
+        for i in range(len(Shifts))] for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])]
+     for r in range(len(T))]
 t = [[[LpVariable("t" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
        for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 c = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
@@ -140,10 +140,10 @@ for r in T:
 # full time contracts
 for e1 in range(Eff[0]):
     for j in range(len(Week) * (HC_r[0] - 2) + 1):
-        cador += lpSum([X[Shifts["Repos"]][j+k][e1] for k in range(2 * len(Week))]) >= 4
+        cador += lpSum([X[Shifts["Repos"]][j + k][e1] for k in range(2 * len(Week))]) >= 4
         cador += lpSum([X[Shifts["Repos"]][j + 2 * k][e1] == X[Shifts["Repos"]][j + 2 * k + 1][e1]
                         for k in range(len(Week))]) >= 1
-        cador += lpSum([X[Shifts["Repos"]][j+k][e1] for k in range(2 * len(Week)) if j+k == 6]) >= 1
+        cador += lpSum([X[Shifts["Repos"]][j + k][e1] for k in range(2 * len(Week)) if j + k == 6]) >= 1
 
 # Soft constraints
 
@@ -151,7 +151,6 @@ for e1 in range(Eff[0]):
 for j in range(len(Week) * HC):
     cador += lpSum([lpSum([X[Shifts["Jca"]][j][e_r] for e_r in range(Eff[r])]) for r in T]) \
              <= 0.2 * lpSum([lpSum([e_r for e_r in range(Eff[r])]) for r in T])
-
 
 # Target Function
 
