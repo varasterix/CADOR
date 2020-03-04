@@ -87,7 +87,7 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for q in range(HC_r[r]):
-            cador += lpSum([lpSum([X[s][q + len(Week) + k][e_r] * duration_D[s] for k in range(len(Week))])
+            cador += lpSum([lpSum([X[s][q + len(Week) + k][e_r] * (duration_D[s] - breakDuration[s]) for k in range(len(Week))])
                             for s in {**Day_Shifts, **Night_Shifts}]) <= 45
             # prendre en compte le break dans les 8h
 
@@ -95,7 +95,7 @@ for r in T:
 for r in T:
     for er in range(Eff[r]):
         for j in range(0, len(Week)*(er-1)+1):
-            cador += lpSum([lpSum([X[i][j+k][er]*duration_D[shift] for k in range(7)])
+            cador += lpSum([lpSum([X[i][j+k][er] * (duration_D[shift] - breakDuration[shift]) for k in range(7)])
                             for i, shift in enumerate({**Night_Shifts, **Day_Shifts})]) <= 48
 
 # Constraints 2.b:
