@@ -53,10 +53,10 @@ for r in T:
             temp1 = 0
             temp2 = 0
             temp3 = 0
-            for i in (Day_Shifts + Night_Shifts):
-                temp1 += X[i][j + 1][e_r]
-                temp2 += X[i][j][e_r]
-                temp3 += X[i][j + 2][e_r]
+            for s in {**Day_Shifts, **Night_Shifts}:
+                temp1 += X[Shifts[s]][j + 1][e_r]
+                temp2 += X[Shifts[s]][j][e_r]
+                temp3 += X[Shifts[s]][j + 2][e_r]
             cador += temp1 <= temp2 + temp3
 
 # Constraint 1.d: Maximum of 5 consecutive days of work
