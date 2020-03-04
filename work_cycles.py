@@ -50,7 +50,7 @@ for i, shift in enumerate(Shifts):
 # Constraint 1.b: only one shift per day per person
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, HC_r[r]):
+        for j in range(1, len(Week)*HC_r[r]):
             cador += lpSum([X[i][j][r] for i in range(len(Shifts))]) == 1
 
 # Constraint 1.c: no single work day
