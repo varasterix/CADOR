@@ -5,10 +5,10 @@ from time import time
 # Parameters
 Week = [i for i in range(7)]                            # days of week
 T = [i for i in range(7)]                               # types of contracts
-Night_Shifts = ["N"]                                    # types of night shifts
-Day_Shifts = ["M", "J", "S"]                            # types of day shifts
-Off_Shifts = ["Jca", "Repos"]                           # types of off shifts
-Shifts = Night_Shifts + Day_Shifts + Off_Shifts
+Night_Shifts = {"N": 3}                                 # types of night shifts
+Day_Shifts = {"M": 0, "J": 1, "S": 2}                   # types of day shifts
+Off_Shifts = {"Jca": 4, "Repos": 5}                     # types of off shifts
+Shifts = {**Night_Shifts, **Day_Shifts, **Off_Shifts}
 
 # Instance dependant Parameters
 beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
@@ -31,7 +31,7 @@ X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
-# Constraint 0
+# Constraint 0 : Repetition of the patterns for each type of contract
 for r in T:
     for e_r in range(Eff[r]):
         for i in range(len(Shifts)):
@@ -42,6 +42,12 @@ for r in T:
 
 
 
+# Constraint 1.d : Maximum of 5 consecutive days of work
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, len(Week)*HC_r[r] - 4):
+            cador += lpSum([lpSum([X[Shifts[s]][j + k][e_r][r]
+                                   for s in {**Day_Shifts, **Night_Shifts}]) for k in range(0, 6)]) <= 5
 
 # Target Function
 
