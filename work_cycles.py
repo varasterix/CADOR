@@ -36,6 +36,7 @@ c = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInt
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
+
 # Constraint 0: Repetition of the patterns for each type of contract
 for r in T:
     for e_r in range(Eff[r]):
@@ -49,7 +50,7 @@ for r in T:
 for i, shift in enumerate(Shifts):
     for j in range(len(Week)):
         for k in range(HC):
-            cador += lpSum([lpSum([X[i][j][r] for e_r in range(Eff[r])]) for r in T]) >= N[j + k * len(Week)][shift]
+            cador += lpSum([lpSum([X[i][j][r] for e_r in range(Eff[r])]) for r in T]) >= N[1 + j + k * len(Week)][shift]
 
 # Constraint 1.b: only one shift per day per person
 for r in T:
@@ -60,15 +61,9 @@ for r in T:
 # Constraint 1.c: no single work day
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, HC_r[r] - 1):
-            temp1 = 0
-            temp2 = 0
-            temp3 = 0
+        for j in range(1, len(Week)*HC_r[r]-1):
             for s in {**Day_Shifts, **Night_Shifts}:
-                temp1 += X[Shifts[s]][j + 1][e_r]
-                temp2 += X[Shifts[s]][j][e_r]
-                temp3 += X[Shifts[s]][j + 2][e_r]
-            cador += temp1 <= temp2 + temp3
+                cador += lpSum(X[Shifts[s]][j+1][e_r]) <= lpSum(X[Shifts[s]][j][e_r]) + lpSum(X[Shifts[s]][j+2][e_r])
 
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
@@ -77,12 +72,19 @@ for r in T:
             cador += lpSum([lpSum([X[Shifts[s]][j + k][e_r][r]
                                    for s in {**Day_Shifts, **Night_Shifts}]) for k in range(0, 6)]) <= 5
 
-# Constraint 1.e: same shift on saturday as on sunday
+# Constraint 1.e: same shift on Saturdays and Sundays
 for r in T:
     for e_r in range(Eff[r]):
-        for k in range(e_r):
-            for i in range(len(Shifts)):
-                cador += X[i][k*5][e_r] == X[i][k * 6][e_r]
+        for i in {**Day_Shifts, **Night_Shifts}:
+            for n in range(1, HC_r[r]+1):
+                j = 5 * n
+                cador += X[i][j][e_r] == X[i][j+1][e_r]
+
+# Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, len(Week)*(e_r-1)+2):
+            cador += lpSum([lpSum([X[i][j+k][e_r] for k in range(7)]) for i in Shifts]) <= 45
 
 # Constraints 2.b:
 # Constraint 2.b.o: Definition of the variables t (beginning time)
@@ -103,7 +105,6 @@ for r in T:
 # Constraint 2.b.i: Minimum daily rest time of 12 hours
 
 # Constraint 2.b.ii: Minimum of 36 consecutive hours for weekly rest (sliding)
-
 
 # Target Function
 
