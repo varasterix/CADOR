@@ -141,17 +141,16 @@ for r in T:
 # full time contracts
 for e1 in range(Eff[0]):
     for j in range(len(Week) * (HC_r[0] - 2) + 1):
-        cador += lpSum([lpSum([X[i][j+k][e1] for k in range(2 * len(Week))]) for i in range(Off_Shifts["Repos"])]) >= 4
-        cador += lpSum([lpSum([X[i][j + 2 * k][e1] == X[i][j + 2 * k + 1][e1] for k in range(len(Week))])
-                        for i in range(Off_Shifts["Repos"])]) >= 1
-        cador += lpSum([lpSum([X[i][j+k][e1] for k in range(2 * len(Week)) if j+k == 6])
-                        for i in range(Off_Shifts["Repos"])]) >= 1
+        cador += lpSum([X[Shifts["Repos"]][j+k][e1] for k in range(2 * len(Week))]) >= 4
+        cador += lpSum([X[Shifts["Repos"]][j + 2 * k][e1] == X[Shifts["Repos"]][j + 2 * k + 1][e1]
+                        for k in range(len(Week))]) >= 1
+        cador += lpSum([X[Shifts["Repos"]][j+k][e1] for k in range(2 * len(Week)) if j+k == 6]) >= 1
 
 # Soft constraints
 
 # Constraint 1: number of Jca at least equals to 20% of total number of staff members
-for j in range(1, len(Week) * HC):
-    cador += lpSum([lpSum([lpSum([X[i][j][e_r] for i in {Off_Shifts["Jca"]}]) for e_r in range(Eff[r])]) for r in T]) \
+for j in range(len(Week) * HC):
+    cador += lpSum([lpSum([X[Shifts["Jca"]][j][e_r] for e_r in range(Eff[r])]) for r in T]) \
              <= 0.2 * lpSum([lpSum([e_r for e_r in range(Eff[r])]) for r in T])
 
 
