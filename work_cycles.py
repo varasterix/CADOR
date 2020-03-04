@@ -47,7 +47,7 @@ for i, shift in enumerate(Shifts):
         for k in range(HC):
             cador += lpSum([lpSum([X[i][j][r] for er in range(Eff[r])]) for r in T]) >= N[j+k*len(Week)][shift]
 
-# Constraint 1.c
+# Constraint 1.c: no single work day
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, HC_r[r] - 1):
