@@ -115,6 +115,16 @@ for r in T:
 
 # Constraint 2.b.ii: Minimum of 36 consecutive hours for weekly rest (sliding)
 
+# Constraint 2.b.iii: at least 4 days, in which 2 successive days including a sunday of break within each fortnight for
+# full time contracts
+for e1 in range(Eff[0]):
+    for j in range(len(Week) * (HC_r[0] - 2) + 1):
+        cador += lpSum([lpSum([X[i][j+k][e1] for k in range(2 * len(Week))]) for i in range(Off_Shifts["Repos"])]) >= 4
+        cador += lpSum([lpSum([X[i][j + 2 * k][e1] == X[i][j + 2 * k + 1][e1] for k in range(len(Week))])
+                        for i in range(Off_Shifts["Repos"])]) >= 1
+        cador += lpSum([lpSum([X[i][j+k][e1] for k in range(2 * len(Week)) if j+k == 6])
+                        for i in range(Off_Shifts["Repos"])]) >= 1
+
 # Target Function
 
 # Solving
