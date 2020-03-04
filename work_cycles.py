@@ -24,9 +24,12 @@ HC = int(np.lcm.reduce(HC_r))
 # Horizon of the plannings creation
 
 # Variables
+X2 = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
+         for i in range(len(Shifts))] for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])]
+      for r in range(len(T))]
 X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
-        for i in range(len(Shifts))] for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])]
-     for r in range(len(T))]
+        for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
+     for i in range(len(Shifts))]
 t = [[[LpVariable("t" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
        for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 c = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
