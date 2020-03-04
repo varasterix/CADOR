@@ -3,11 +3,11 @@ import numpy as np
 from time import time
 
 # Parameters
-Week = [i for i in range(7)]  # days of week
-T = [i for i in range(7)]  # types of contracts
-Night_Shifts = ["N"]  # types of night shifts
-Day_Shifts = ["M", "J", "S"]  # types of day shifts
-Off_Shifts = ["Jca", "Repos"]  # types of off shifts
+Week = [i for i in range(7)]                            # days of week
+T = [i for i in range(7)]                               # types of contracts
+Night_Shifts = ["N"]                                    # types of night shifts
+Day_Shifts = ["M", "J", "S"]                            # types of day shifts
+Off_Shifts = ["Jca", "Repos"]                           # types of off shifts
 Shifts = Night_Shifts + Day_Shifts + Off_Shifts
 
 # Instance dependant Parameters
@@ -15,8 +15,8 @@ beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
 completionTime_c = {"M": 14, "J": 17, "S": 22, "N": 6}
 duration_D = {"M": 7.5, "J": 7.5, "S": 7.5, "N": 10}
 breakDuration = {"M": 0.5, "J": 0.5, "S": 0.5}
-N = [{"M": 2, "J": 1, "S": 2, "N": 1} for j in Week]  # workforce Needs for every shifts of every day in week
-Eff = [3 for i in T]  # number of employees already affected for each type of contract
+N = [{"M": 2, "J": 1, "S": 2, "N": 1} for j in Week]    # workforce Needs for every shifts of every day in week
+Eff = [3 for i in T]                                    # number of employees already affected for each type of contract
 # Work cycles length (not a variable in this model)
 HC_r = [eff for eff in Eff]
 # Overall work cycle length
@@ -32,6 +32,7 @@ X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
+
 # Constraint 0
 for r in T:
     for e_r in range(Eff[r]):
@@ -52,6 +53,20 @@ for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, HC_r[r]):
             cador += lpSum([X[i][j][r] for i in range(len(Shifts))]) == 1
+
+# Constraint 1.c: no single work day
+for r in T:
+    for e_r in range(Eff[r]):
+        for j in range(1, HC_r[r] - 1):
+            temp1 = 0
+            temp2 = 0
+            temp3 = 0
+            for i in (Day_Shifts + Night_Shifts):
+                temp1 += X[i][j + 1][e_r]
+                temp2 += X[i][j][e_r]
+                temp3 += X[i][j + 2][e_r]
+            cador += temp1 <= temp2 + temp3
+
 
 # Target Function
 
