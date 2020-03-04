@@ -41,6 +41,11 @@ for r in T:
                     for k in range(1, HC // HC_r[r]):
                         cador += X[i][j][e_r][r] == X[i][j + k*HC_r[r]][e_r][r]
 
+# Constraint 1.a: respect of needs
+for i, shift in enumerate(Shifts):
+    for j in range(len(Week)):
+        for k in range(HC):
+            cador += lpSum([lpSum([X[i][j][r] for er in range(Eff[r])]) for r in T]) >= N[j+k*len(Week)][shift]
 
 # Constraint 1.c
 for r in T:
