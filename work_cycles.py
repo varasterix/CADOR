@@ -44,7 +44,7 @@ for r in T:
 
 # Constraint 1.a: respect of needs
 for i, shift in enumerate(Shifts):
-    for j in range(len(Week)):
+    for j in range(1, len(Week)+1):
         for k in range(HC):
             cador += lpSum([lpSum([X[i][j][r] for e_r in range(Eff[r])]) for r in T]) >= N[j + k * len(Week)][shift]
 
@@ -75,6 +75,12 @@ for r in T:
             for n in range(1, HC_r[r]):
                 j = 5 * n
                 cador += X[i][j][e_r] == X[i][j+1][e_r]
+
+# Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
+for r in T:
+    for er in range(Eff[r]):
+        for j in range(1, len(Week)*(er-1)+2):
+            cador += lpSum([lpSum([X[i][j+k][er] for k in range(7)]) for i in Shifts]) <= 45
 
 # Target Function
 
