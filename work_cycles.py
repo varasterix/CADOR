@@ -60,6 +60,12 @@ for r in T:
                 temp3 += X[i][j + 2][e_r]
             cador += temp1 <= temp2 + temp3
 
+# Constraint 1.e: same shift on Saturdays and Sundays
+for r in T:
+    for e_r in range(Eff[r]):
+        for i in (Day_Shifts + Night_Shifts):
+            for j in range(0):
+                pass
 
 # Target Function
 
