@@ -41,7 +41,7 @@ cador = LpProblem("CADOR", LpMinimize)
 
 # Hard Constraints
 
-# Constraint 0: Repetition of the patterns for each type of contract
+# Constraint 0: repetition of the patterns for each type of contract
 for r in T:
     for e_r in range(Eff[r]):
         for i in range(len(Shifts)):
@@ -70,7 +70,7 @@ for r in T:
                      lpSum([X[Shifts[s]][j][e_r] for s in {**Day_Shifts, **Night_Shifts}]) + \
                      lpSum([X[Shifts[s]][j + 2][e_r] for s in {**Day_Shifts, **Night_Shifts}])
 
-# Constraint 1.d: Maximum of 5 consecutive days of work
+# Constraint 1.d: maximum of 5 consecutive days of work
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] - 4):
@@ -101,7 +101,7 @@ for r in T:
 
 # Constraints 2.b:
 
-# Constraint 2.b.o: Definition of the variables t (beginning time)
+# Constraint 2.b.o: definition of the variables t (beginning time)
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] + 1):
@@ -109,26 +109,26 @@ for r in T:
                                             for s in {**Day_Shifts, **Night_Shifts}]) \
                      + 24 * (1 - lpSum([X[Shifts[s]][j][e_r][r] for s in {**Day_Shifts, **Night_Shifts}]))
 
-# Constraint 2.b.oo: Definition of the variables c (completion time)
+# Constraint 2.b.oo: definition of the variables c (completion time)
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] + 1):
             cador += c[j][e_r][r] == lpSum([(beginningTime_t[Shifts[s]] + duration_D[Shifts[s]])
                                             * X[Shifts[s]][j][e_r][r] for s in {**Day_Shifts, **Night_Shifts}])
 
-# Constraint 2.b.ooo: Definition of the variables r (rest/off day or not)
+# Constraint 2.b.ooo: definition of the variables r (rest/off day or not)
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] + 1):
             cador += rest[j][e_r][r] == 1 - lpSum([X[Shifts[s]][j][e_r][r] for s in {**Day_Shifts, **Night_Shifts}])
 
-# Constraint 2.b.i: Minimum daily rest time of 12 hours
+# Constraint 2.b.i: minimum daily rest time of 12 hours
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] - 1):
             cador += (24 + t[j][e_r][r]) + c[j][e_r][r] <= 12
 
-# Constraint 2.b.ii: Minimum of 36 consecutive hours for weekly rest (sliding)
+# Constraint 2.b.ii: minimum of 36 consecutive hours for weekly rest (sliding)
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] - 5):
