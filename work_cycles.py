@@ -33,6 +33,8 @@ cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
 
+# Hard constraints
+
 # Constraint 0: Repetition of the patterns for each type of contract
 for r in T:
     for e_r in range(Eff[r]):
@@ -58,8 +60,9 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week)*HC_r[r]-1):
-            for s in {**Day_Shifts, **Night_Shifts}:
-                cador += lpSum(X[Shifts[s]][j+1][e_r]) <= lpSum(X[Shifts[s]][j][e_r]) + lpSum(X[Shifts[s]][j+2][e_r])
+            cador += lpSum(X[Shifts[s]][j+1][e_r] for s in {**Day_Shifts, **Night_Shifts}) <= \
+                     lpSum(X[Shifts[s]][j][e_r] for s in {**Day_Shifts, **Night_Shifts}) + \
+                     lpSum(X[Shifts[s]][j+2][e_r] for s in {**Day_Shifts, **Night_Shifts})
 
 # Constraint 1.d: Maximum of 5 consecutive days of work
 for r in T:
@@ -81,6 +84,14 @@ for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week)*(e_r-1)+2):
             cador += lpSum([lpSum([X[i][j+k][e_r] for k in range(7)]) for i in Shifts]) <= 45
+
+
+# Soft constraints
+
+# Constraint 1: number of Jca at least equals to 20% of total number of staff members
+for j in range(1, len(Week)*HC):
+    cador += (lpSum(lpSum(lpSum(X[i][j][e_r] for i in {Off_Shifts["Jca"]}) for e_r in range(Eff[r]))) for r in T) <= \
+             0.2 * lpSum(lpSum(e_r for e_r in range(Eff[r]) for r in T))
 
 # Target Function
 
