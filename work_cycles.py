@@ -102,7 +102,7 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(len(Week) * (e_r - 1) + 1):
-            cador += lpSum([lpSum([X[Shifts[s]][j + k][r][e_r] * duration_D[Shifts[s]]
+            cador += lpSum([lpSum([X[Shifts[s]][j + k][r][e_r] * duration_D[s]
                                    for k in range(7)]) for s in {**Night_Shifts, **Day_Shifts}]) <= 48
 
 # Constraints 2.b:
