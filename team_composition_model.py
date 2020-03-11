@@ -5,7 +5,7 @@ from src.utils import read_team_composition_data_from_csv, export_team_compositi
 # Loading team composition csv data file
 data_file_path = sys.argv[1]
 exportation_path = sys.argv[2]
-export_results = bool(sys.argv[3])
+export_results = bool(int(sys.argv[3]))
 
 # Parameters + Instance dependant Parameters
 instance_id, bw, Pp, P80, T, ratios, costs, A, a, week_days, week_indices, N, shifts = \
