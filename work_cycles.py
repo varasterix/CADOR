@@ -9,6 +9,8 @@ Night_Shifts = {"N": 3}  # types of night shifts
 Day_Shifts = {"M": 0, "J": 1, "S": 2}  # types of day shifts
 Off_Shifts = {"Jca": 4, "Repos": 5}  # types of off shifts
 Shifts = {**Night_Shifts, **Day_Shifts, **Off_Shifts}
+Work_Shifts = {**Night_Shifts, **Day_Shifts}
+
 
 # Instance dependant Parameters
 beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
@@ -54,10 +56,11 @@ for r in T:
                         cador += X[i][j][e_r][r] == X[i][j + k * HC_r[r]][e_r][r]
 
 # Constraint 1.a: respect of needs
-for (s, i) in Shifts:
+for s in Work_Shifts:
     for j in range(len(Week)):
         for k in range(HC):
-            cador += lpSum([lpSum([X[i][j][e_r][r] for e_r in range(Eff[r])]) for r in T]) >= N[1 + j + k * len(Week)][i]
+            cador += lpSum([lpSum([X[Work_Shifts[s]][j + k * len(Week)][r][e_r] for r in T]) for e_r in range(Eff[r])])\
+                     >= N[j][s]
 
 # Constraint 1.b: only one shift per day per person
 for r in T:
