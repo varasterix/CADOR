@@ -71,7 +71,7 @@ for r in T:
 # Constraint 1.c: no single work day
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week) * HC_r[r] - 1):
+        for j in range(1, len(Week) * HC_r[r] - 2):
             cador += lpSum([X[Shifts[s]][j + 1][r][e_r] for s in {**Day_Shifts, **Night_Shifts}]) <= \
                      lpSum([X[Shifts[s]][j][r][e_r] for s in {**Day_Shifts, **Night_Shifts}]) + \
                      lpSum([X[Shifts[s]][j + 2][r][e_r] for s in {**Day_Shifts, **Night_Shifts}])
