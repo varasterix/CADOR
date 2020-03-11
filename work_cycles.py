@@ -115,8 +115,8 @@ for r in T:
 # Constraint 2.b.o: definition of the variables t (beginning time)
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week) * HC_r[r] + 1):
-            cador += t[j][e_r][r] == lpSum([beginningTime_t[s] * X[Shifts[s]][j][e_r][r] for s in Work_Shifts])\
+        for j in range(len(Week) * HC_r[r]):
+            cador += t[j][r][e_r] == lpSum([beginningTime_t[s] * X[Shifts[s]][j][r][e_r] for s in Work_Shifts])\
                      + 24 * (1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts]))
 
 # Constraint 2.b.oo: definition of the variables c (completion time)
