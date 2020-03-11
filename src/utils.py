@@ -108,6 +108,24 @@ def read_team_composition_data_from_csv(file_path):
 
 def export_team_composition_results_as_csv(exportation_repository_path, instance_id, status, solving_time,
                                            contract_types, contract_ratios, workforce):
+    file_path = exportation_repository_path + "team_composition_" + str(instance_id) + ".csv"
+    with open(file_path, 'w+') as csv_file:
+        writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
+        instance_row = ['instance_id', str(instance_id)]
+        time_row = ['solving_time', str(solving_time)]
+        if status == 'Optimal':
+            types_row = [str(t) for t in contract_types]
+            ratios_row = [str(r_t) for r_t in contract_ratios]
+            workforce_row = [str(w) for w in workforce]
+            all_rows = [instance_row, time_row, types_row, ratios_row, workforce_row]
+        else:
+            status_row = ['status', status]
+            all_rows = [instance_row, time_row, status_row]
+        writer.writerows(all_rows)
+    csv_file.close()
+
+
+def read_team_composition_results_as_csv(exportation_repository_path, instance_id):
     file_path = exportation_repository_path + "team_composition_" + str(instance_id)
     with open(file_path, 'w+') as csv_file:
         writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
