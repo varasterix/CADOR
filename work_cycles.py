@@ -48,10 +48,10 @@ cador = LpProblem("CADOR", LpMinimize)
 for r in T:
     for e_r in range(Eff[r]):
         for i in range(len(Shifts)):
-            for j in range(1, HC_r[r]):
+            for j in range(HC_r[r]):
                 if HC_r[r] != HC:
-                    for k in range(1, HC // HC_r[r]):
-                        cador += X[i][j][e_r][r] == X[i][j + k * HC_r[r]][e_r][r]
+                    for k in range(HC // HC_r[r]):
+                        cador += X[i][j][r][e_r] == X[i][j + k * HC_r[r]][r][e_r]
 
 # Constraint 1.a: respect of needs
 for (s, i) in Shifts:
