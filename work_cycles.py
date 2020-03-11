@@ -16,8 +16,8 @@ beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
 completionTime_c = {"M": 14, "J": 17, "S": 22, "N": 6}
 duration_D = {"M": 8, "J": 8, "S": 8, "N": 10}
 breakDuration = {"M": 0.5, "J": 0.5, "S": 0.5}
-N = [{"M": 2, "J": 1, "S": 2, "N": 1} for j in Week]  # workforce needs for every shifts of every day in week
-Eff = [3 for i in T]  # number of employees already affected for each type of contract
+N = [{"M": 8, "J": 8, "S": 8, "N": 10} for j in Week]  # workforce needs for every shifts of every day in week
+Eff = [15 for i in T]  # number of employees already affected for each type of contract
 # Work cycles length (not a variable in this model)
 HC_r = [eff for eff in Eff]
 # Overall work cycle length
@@ -25,22 +25,13 @@ HC = int(np.lcm.reduce(HC_r))
 # Horizon of the plannings creation
 
 # Variables
-# X2 = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
-#          for i in range(len(Shifts))] for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])]
-#       for r in range(len(T))]
 X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
         for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
      for i in range(len(Shifts))]
-# t2 = [[[LpVariable("t" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
-#        for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 t = [[[LpVariable("t" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
        for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
-# c2 = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
-#         for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 c = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
        for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
-# rest2 = [[[LpVariable("r" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
-#            for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 rest = [[[LpVariable("r" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
           for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
 
@@ -99,7 +90,7 @@ for r in T:
 # Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
 for r in T:
     for e_r in range(Eff[r]):
-        for q in range(HC_r[r]):
+        for q in range(HC_r[r] - 1):
             cador += lpSum([lpSum([X[Shifts[s]][q + len(Week) + k][r][e_r] * duration_D[s]
                                    for k in range(len(Week))]) for s in Work_Shifts]) <= 45
 
@@ -116,7 +107,7 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(len(Week) * HC_r[r]):
-            cador += t[j][r][e_r] == lpSum([beginningTime_t[s] * X[Shifts[s]][j][r][e_r] for s in Work_Shifts])\
+            cador += t[j][r][e_r] == lpSum([beginningTime_t[s] * X[Shifts[s]][j][r][e_r] for s in Work_Shifts]) \
                      + 24 * (1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts]))
 
 # Constraint 2.b.oo: definition of the variables c (completion time)
@@ -139,12 +130,12 @@ for r in T:
             cador += (24 + t[j][r][e_r]) + c[j][r][e_r] <= 12
 
 # Constraint 2.b.ii: minimum of 36 consecutive hours for weekly rest (sliding)
-for r in T:
-    for e_r in range(Eff[r]):
-        for j in range(1, len(Week) * HC_r[r] - 5):
-            cador += lpSum([rest[j + k][e_r][r] * ((24 - c[j + k - 1][e_r][r]) + t[j + k + 1][e_r][r] >= (36 - 24))
-                            + (24 + t[j + k][e_r][r] - c[j + k - 1][e_r][r] >= 36) for k in range(5)]) \
-                     + (24 + t[j + 5][e_r][r] - c[j + 4][e_r][r] >= 36) >= 1
+# for r in T:
+#     for e_r in range(Eff[r]):
+#         for j in range(1, len(Week) * HC_r[r] - 5):
+#             cador += lpSum([rest[j + k][e_r][r] * ((24 - c[j + k - 1][e_r][r]) + t[j + k + 1][e_r][r] >= (36 - 24))
+#                             + (24 + t[j + k][e_r][r] - c[j + k - 1][e_r][r] >= 36) for k in range(5)]) \
+#                      + (24 + t[j + 5][e_r][r] - c[j + 4][e_r][r] >= 36) >= 1
 
 # Constraint 2.b.iii: at least 4 days, in which 2 successive days including a sunday of break within each fortnight for
 # full time contracts
@@ -167,6 +158,7 @@ cador += 1
 
 # Solving
 start_time = time()
-status = cador.solve()
+cplex_path = "C:\\Program Files\\IBM\\ILOG\\CPLEX_Studio1210\\cplex\\bin\\x64_win64\\cplex.exe"
+status = cador.solve(CPLEX(path=cplex_path))
 print("Problem solved in " + str(round(time() - start_time, 3)) + " seconds")
 print(LpStatus[status])
