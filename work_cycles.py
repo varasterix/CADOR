@@ -16,8 +16,8 @@ beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
 completionTime_c = {"M": 14, "J": 17, "S": 22, "N": 6}
 duration_D = {"M": 8, "J": 8, "S": 8, "N": 10}
 breakDuration = {"M": 0.5, "J": 0.5, "S": 0.5}
-N = [{"M": 8, "J": 8, "S": 8, "N": 10} for j in Week]  # workforce needs for every shifts of every day in week
-Eff = [15 for i in T]  # number of employees already affected for each type of contract
+N = [{"M": 2, "J": 1, "S": 2, "N": 1} for j in Week]  # workforce needs for every shifts of every day in week
+Eff = [3 for i in T]  # number of employees already affected for each type of contract
 # Work cycles length (not a variable in this model)
 HC_r = [eff for eff in Eff]
 # Overall work cycle length
@@ -90,8 +90,8 @@ for r in T:
 # Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
 for r in T:
     for e_r in range(Eff[r]):
-        for q in range(HC_r[r] - 1):
-            cador += lpSum([lpSum([X[Shifts[s]][q + len(Week) + k][r][e_r] * duration_D[s]
+        for q in range(HC_r[r]):
+            cador += lpSum([lpSum([X[Shifts[s]][q * len(Week) + k][r][e_r] * duration_D[s]
                                    for k in range(len(Week))]) for s in Work_Shifts]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
@@ -107,7 +107,7 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(len(Week) * HC_r[r]):
-            cador += t[j][r][e_r] == lpSum([beginningTime_t[s] * X[Shifts[s]][j][r][e_r] for s in Work_Shifts]) \
+            cador += t[j][r][e_r] == lpSum([beginningTime_t[s] * X[Shifts[s]][j][r][e_r] for s in Work_Shifts])\
                      + 24 * (1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts]))
 
 # Constraint 2.b.oo: definition of the variables c (completion time)
