@@ -100,7 +100,7 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for q in range(HC_r[r]):
-            cador += lpSum([lpSum([X[Shifts[s]][q + len(Week) + k][r][e_r] * duration_D[s]
+            cador += lpSum([lpSum([X[Shifts[s]][q * len(Week) + k][r][e_r] * duration_D[s]
                                    for k in range(len(Week))]) for s in Work_Shifts]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
@@ -139,12 +139,14 @@ for r in T:
             cador += (24 + t[j][r][e_r]) + c[j][r][e_r] <= 12
 
 # Constraint 2.b.ii: minimum of 36 consecutive hours for weekly rest (sliding)
+"""
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] - 5):
             cador += lpSum([rest[j + k][e_r][r] * ((24 - c[j + k - 1][e_r][r]) + t[j + k + 1][e_r][r] >= (36 - 24))
                             + (24 + t[j + k][e_r][r] - c[j + k - 1][e_r][r] >= 36) for k in range(5)]) \
                      + (24 + t[j + 5][e_r][r] - c[j + 4][e_r][r] >= 36) >= 1
+"""
 
 # Constraint 2.b.iii: at least 4 days, in which 2 successive days including a sunday of break within each fortnight for
 # full time contracts
