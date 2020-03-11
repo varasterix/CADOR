@@ -129,14 +129,14 @@ for r in T:
 # Constraint 2.b.ooo: definition of the variables r (rest/off day or not)
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week) * HC_r[r] + 1):
-            cador += rest[j][e_r][r] == 1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts])
+        for j in range(len(Week) * HC_r[r]):
+            cador += rest[j][r][e_r] == 1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts])
 
 # Constraint 2.b.i: minimum daily rest time of 12 hours
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week) * HC_r[r] - 1):
-            cador += (24 + t[j][e_r][r]) + c[j][e_r][r] <= 12
+        for j in range(len(Week) * HC_r[r]):
+            cador += (24 + t[j][r][e_r]) + c[j][r][e_r] <= 12
 
 # Constraint 2.b.ii: minimum of 36 consecutive hours for weekly rest (sliding)
 for r in T:
