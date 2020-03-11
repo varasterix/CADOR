@@ -8,8 +8,8 @@ T = [i for i in range(7)]  # types of contracts
 Night_Shifts = {"N": 3}  # types of night shifts
 Day_Shifts = {"M": 0, "J": 1, "S": 2}  # types of day shifts
 Off_Shifts = {"Jca": 4, "Repos": 5}  # types of off shifts
-Work_Shifts = {**Night_Shifts, **Day_Shifts}
-Shifts = {**Night_Shifts, **Day_Shifts, **Off_Shifts}
+Work_Shifts = {**Night_Shifts, **Day_Shifts}  # all types of work shifts
+Shifts = {**Night_Shifts, **Day_Shifts, **Off_Shifts}  # all types of shifts
 
 # Instance dependant Parameters
 beginningTime_t = {"M": 6, "J": 9, "S": 14, "N": 20}
