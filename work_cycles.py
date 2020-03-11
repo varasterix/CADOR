@@ -108,18 +108,18 @@ for r in T:
 # Constraints 2.b:
 
 # Constraint 2.b.o: definition of the variables t (beginning time)
-for r in T:
-    for e_r in range(Eff[r]):
-        for j in range(1, len(Week) * HC_r[r] + 1):
-            cador += t[j][e_r][r] == lpSum([beginningTime_t[Shifts[s]] * X[Shifts[s]][j][e_r][r]
-                                            for s in {**Day_Shifts, **Night_Shifts}]) \
-                     + 24 * (1 - lpSum([X[Shifts[s]][j][r][e_r] for s in {**Day_Shifts, **Night_Shifts}]))
+# for r in T:
+#     for e_r in range(Eff[r]):
+#         for j in range(1, len(Week) * HC_r[r] + 1):
+#             cador += t[j][e_r][r] == lpSum([beginningTime_t[Shifts[s]] * X[Shifts[s]][j][e_r][r]
+#                                             for s in {**Day_Shifts, **Night_Shifts}]) \
+#                      + 24 * (1 - lpSum([X[Shifts[s]][j][r][e_r] for s in {**Day_Shifts, **Night_Shifts}]))
 
 # Constraint 2.b.oo: definition of the variables c (completion time)
 for r in T:
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] + 1):
-            cador += c[j][e_r][r] == lpSum([(beginningTime_t[Shifts[s]] + duration_D[Shifts[s]])
+            cador += c[j][e_r][r] == lpSum([(beginningTime_t[s] + duration_D[s])
                                             * X[Shifts[s]][j][r][e_r] for s in {**Day_Shifts, **Night_Shifts}])
 
 # Constraint 2.b.ooo: definition of the variables r (rest/off day or not)
