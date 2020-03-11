@@ -95,7 +95,7 @@ for r in T:
 for r in T:
     for e_r in range(Eff[r]):
         for q in range(HC_r[r]):
-            cador += lpSum([lpSum([X[Shifts[s]][q + len(Week) + k][r][e_r] * duration_D[Shifts[s]]
+            cador += lpSum([lpSum([X[Shifts[s]][q + len(Week) + k][r][e_r] * duration_D[s]
                                    for k in range(len(Week))]) for s in {**Day_Shifts, **Night_Shifts}]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
