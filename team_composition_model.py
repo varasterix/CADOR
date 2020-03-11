@@ -8,7 +8,7 @@ exportation_path = sys.argv[2]
 export_results = bool(int(sys.argv[3]))
 
 # Parameters + Instance dependant Parameters
-instance_id, bw, Pp, P80, T, ratios, costs, A, a, week_days, week_indices, N, shifts = \
+instance_id, bw, Pp, P80, T, ratios, costs, A, a, week_days, week_indices, N = \
     read_team_composition_data_from_csv(data_file_path)
 
 # Variables
@@ -45,6 +45,10 @@ status = cador.solve()
 solving_time = time.time() - start_time
 
 if export_results:
-    workforce = [int(value(W[i])) for i in range(len(W))]
-    export_team_composition_results_as_csv(exportation_path, instance_id,
-                                           LpStatus[status], solving_time, T, ratios, workforce)
+    if LpStatus[status] == 'Optimal':
+        workforce = [int(value(W[i])) for i in range(len(W))]
+        export_team_composition_results_as_csv(exportation_path, instance_id,
+                                               LpStatus[status], solving_time, T, ratios, workforce)
+    else:
+        export_team_composition_results_as_csv(exportation_path, instance_id,
+                                               LpStatus[status], solving_time, T, ratios, None)
