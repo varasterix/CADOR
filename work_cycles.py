@@ -79,9 +79,9 @@ for r in T:
 # Constraint 1.d: maximum of 5 consecutive days of work
 for r in T:
     for e_r in range(Eff[r]):
-        for j in range(1, len(Week) * HC_r[r] - 4):
+        for j in range(len(Week) * HC_r[r] - 5):
             cador += lpSum([lpSum([X[Shifts[s]][j + k][r][e_r]
-                                   for s in {**Day_Shifts, **Night_Shifts}]) for k in range(0, 6)]) <= 5
+                                   for s in {**Day_Shifts, **Night_Shifts}]) for k in range(6)]) <= 5
 
 # Constraint 1.e: same shift on Saturdays and Sundays
 for r in T:
