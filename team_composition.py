@@ -45,7 +45,8 @@ cador += lpSum([W[i - 1] * costs[i - 1] for i in T]) - W[0]
 
 # Solving
 start_time = time()
-status = cador.solve()
+cplex_path = "C:\\Program Files\\IBM\\ILOG\\CPLEX_Studio1210\\cplex\\bin\\x64_win64\\cplex.exe"
+status = cador.solve(CPLEX(path=cplex_path))
 print("Problem solved in " + str(round(time()-start_time, 3)) + " seconds")
 print(LpStatus[status])
 for i in range(len(W)):
