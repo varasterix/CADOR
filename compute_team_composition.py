@@ -1,7 +1,7 @@
 import subprocess
 import src.constants as constants
 
-team_composition_csv_data_file_path = 'test/team_composition_data_file_0.csv'
+team_composition_csv_data_file_path = 'data/team_composition_data_file_0.csv'
 exportation_file_path = constants.EXPORTATION_REPOSITORY_PATH
 export_results = 1  # boolean
 
