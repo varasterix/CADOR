@@ -1,7 +1,7 @@
 import subprocess
 import src.constants as constants
 
-planning_csv_data_file_path = 'test/planning_data_file_0.csv'
+planning_csv_data_file_path = 'data/planning_data_file_0.csv'
 exportation_file_path = constants.EXPORTATION_REPOSITORY_PATH
 export_results = 1  # boolean
 
