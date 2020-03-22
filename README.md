@@ -7,6 +7,7 @@ Hospital staff scheduling
 The planning data is stored in a csv file with the following special format:
 
     instance_id                     <id>
+    year                            <yyyy>
     budgeted_workforce              <bw>
     annual_hours_fix                Tdf Tnf
     annual_hours_var                Tdv Tnv
