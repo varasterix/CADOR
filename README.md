@@ -1,4 +1,5 @@
-# CADOR
+# CADOR project (Application Case: Decision, Optimization and Responsibility)
+
 Hospital staff scheduling
 
 ## Planning data csv file format
@@ -31,3 +32,5 @@ Notes:
 - *c*[*s*] : the completion time of the shift *s*
 - *D*[*s*] : the duration of the shift *s*
 - *bD*[*s*] : the break duration in the shift *s*
+
+The name of the planning data file is, by convention : "planning_data_file_<*id*>.csv"
