@@ -190,7 +190,7 @@ def export_work_cycles_results_as_csv(exportation_repository_path, instance_id, 
             # Labels of the work cycles table
             horizon = len(work_cycles[0][0])
             nb_of_weeks = int(horizon / 7)
-            legend_row_1 = ['Prénom', '%', 'J/N']
+            legend_row_1 = ['Prenom', '%', 'J/N']
             legend_row_2 = ['Agent', '%', 'J/N']
             for week in range(nb_of_weeks):
                 legend_row_1 += ['Semaine {}'.format(week + 1)] + ['' for _ in range(6)]
