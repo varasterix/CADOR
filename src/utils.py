@@ -90,7 +90,7 @@ def read_planning_data_from_csv(file_path):
                 - types of off shifts
                 - day codes (str) of the days of a week
                 - indices (int) of the days of a week
-                - workforce needs for every shifts of every day in week
+                - workforce needs for every shifts of every day in a week
                 - beginning times of some shifts
                 - completion times of some shifts
                 - durations of some shifts
@@ -105,7 +105,7 @@ def read_planning_data_from_csv(file_path):
             if index == 0:
                 instance_id = row[1]  # type str
             elif index == 1:
-                budgeted_workforce = float(row[1])
+                budgeted_workforce = None if row[1] == "" else float(row[1])
             elif index == 2:
                 annual_hours_fix = {'day': int(row[1]), 'night': int(row[2])}
             elif index == 3:
