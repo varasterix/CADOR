@@ -45,17 +45,17 @@ cador = LpProblem("CADOR", LpMinimize)
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for i in range(len(Shifts)):
-            for j in range(HC_r[r]):
-                if HC_r[r] != HC:
-                    for k in range(HC // HC_r[r]):
-                        cador += X[i][j][r][e_r] == X[i][j + k * HC_r[r]][r][e_r]
+            for j in range(HC_r[r] * len(Week)):
+                if HC_r[r] != HC and HC_r[r] > 0:
+                    for k in range(1, HC // HC_r[r]):
+                        cador += X[i][j][r][e_r] == X[i][j + k * HC_r[r] * len(Week)][r][e_r]
 
 # Constraint 1.a: respect of needs
 for s in Work_Shifts:
     for j in range(len(Week)):
         for k in range(HC):
             cador += lpSum([lpSum([X[Work_Shifts[s]][j + k * len(Week)][r][e_r] for e_r in range(Eff[r])])
-                            for r in range(len(T))]) >= N[j][s]
+                            for r in range(len(T))]) >= N[j][s]  # == ?
 
 # Constraint 1.b: only one shift per day per person
 for r in range(len(T)):
@@ -82,9 +82,8 @@ for r in range(len(T)):
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for s in Work_Shifts:
-            for n in range(1, HC_r[r] + 1):
-                j = 5 * n
-                cador += X[Shifts[s]][j][r][e_r] == X[Shifts[s]][j + 1][r][e_r]
+            for k in range(HC):
+                cador += X[Shifts[s]][5 + k * len(Week)][r][e_r] == X[Shifts[s]][6 + k * len(Week)][r][e_r]
 
 # Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
 for r in range(len(T)):
