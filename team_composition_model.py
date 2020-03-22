@@ -8,8 +8,9 @@ exportation_path = sys.argv[2]
 export_results = bool(int(sys.argv[3]))
 
 # Parameters + Instance dependant Parameters
-instance_id, bw, Pp, P80, T, ratios, costs, A, a, Day_Shifts, Night_Shifts, Off_Shifts, week_days, Week, N, \
-    beginningTime_t, completionTime_c, duration_D, breakDuration = read_planning_data_from_csv(planning_data_file_path)
+instance_id, bw, annual_hours_fix, annual_hours_var, Pp, P80, T, ratios, costs, A, a, Day_Shifts, Night_Shifts, \
+    Off_Shifts, week_days, Week, N, beginningTime_t, completionTime_c, duration_D, breakDuration = \
+    read_planning_data_from_csv(planning_data_file_path)
 
 # Variables
 W = [LpVariable("W"+str(i), 0, cat=LpInteger) for i in T]  # workforce of every type of contract
