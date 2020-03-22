@@ -1,5 +1,6 @@
 from pulp import *
 import time
+import math
 from src.utils import read_planning_data_from_csv, export_team_composition_results_as_csv
 from src.workforce import compute_required_workforce
 
@@ -16,8 +17,10 @@ instance_id, year, bw, annual_hours_fix, annual_hours_var, Pp, P80, T, ratios, c
 # Checking if a budgeted workforce is given. Otherwise, the budgeted workforce required is used.
 is_bw_given = False if bw is None else True
 if not is_bw_given:
-    bw = compute_required_workforce(N, Day_Shifts, Night_Shifts, duration_D, breakDuration, annual_hours_fix,
-                                    annual_hours_var, Week, year)
+    bw_exact = compute_required_workforce(N, Day_Shifts, Night_Shifts, duration_D, breakDuration, annual_hours_fix,
+                                          annual_hours_var, Week, year)
+    bw = (math.ceil(bw_exact * 100) + (0 if math.ceil(bw_exact * 100) % 5 == 0
+                                       else 5 - (math.ceil(bw_exact * 100) % 5))) / 100
 
 # Variables
 W = [LpVariable("W"+str(i), 0, cat=LpInteger) for i in T]  # workforce of every type of contract
@@ -28,7 +31,7 @@ cador = LpProblem("CADOR", LpMinimize)
 # Constraints
 
 # Budgeted workforce respected
-cador += lpSum([W[i - 1] * ratios[i - 1] for i in T]) == bw
+cador += lpSum([W[i - 1] * ratios[i - 1] for i in T]) == bw  # /!\ == brings sometimes to unfeasible solutions
 
 # Availability respected
 for i in T:
