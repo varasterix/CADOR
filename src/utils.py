@@ -75,6 +75,7 @@ def read_planning_data_from_csv(file_path):
     Note: The planning csv data file has to respect a special format
     :param file_path: path of the file containing the planning data
     :return:    - instance id of the team composition data
+                - year for the planning instance
                 - budgeted workforce
                 - number of annual working hours for workforce in FIXED rest (for day and night shifts)
                 - number of annual working hours for workforce in VARIABLE rest (for day and night shifts)
@@ -105,48 +106,50 @@ def read_planning_data_from_csv(file_path):
             if index == 0:
                 instance_id = row[1]  # type str
             elif index == 1:
-                budgeted_workforce = None if row[1] == "" else float(row[1])
+                year = int(row[1])
             elif index == 2:
-                annual_hours_fix = {'day': int(row[1]), 'night': int(row[2])}
+                budgeted_workforce = None if row[1] == "" else float(row[1])
             elif index == 3:
-                annual_hours_var = {'day': int(row[1]), 'night': int(row[2])}
+                annual_hours_fix = {'day': int(row[1]), 'night': int(row[2])}
             elif index == 4:
-                partial_time_contracts_prop = float(row[1])
+                annual_hours_var = {'day': int(row[1]), 'night': int(row[2])}
             elif index == 5:
-                eighty_percent_contracts_prop = float(row[1])
+                partial_time_contracts_prop = float(row[1])
             elif index == 6:
-                contracts_type = [int(row[i]) for i in range(1, 8)]
+                eighty_percent_contracts_prop = float(row[1])
             elif index == 7:
-                contracts_ratios = [float(row[i]) for i in range(1, 8)]
+                contracts_type = [int(row[i]) for i in range(1, 8)]
             elif index == 8:
-                contracts_costs = [float(row[i]) for i in range(1, 8)]
+                contracts_ratios = [float(row[i]) for i in range(1, 8)]
             elif index == 9:
-                contracts_availability = [int(row[i]) for i in range(1, 8)]
+                contracts_costs = [float(row[i]) for i in range(1, 8)]
             elif index == 10:
-                contracts_affected = [int(row[i]) for i in range(1, 8)]
+                contracts_availability = [int(row[i]) for i in range(1, 8)]
             elif index == 11:
+                contracts_affected = [int(row[i]) for i in range(1, 8)]
+            elif index == 12:
                 day_shifts, i = {}, 1
                 while row[i] != '':
                     day_shifts[row[i]] = shift_index
                     shift_index += 1
                     i += 1
-            elif index == 12:
+            elif index == 13:
                 night_shifts, i = {}, 1
                 while row[i] != '':
                     night_shifts[row[i]] = shift_index
                     shift_index += 1
                     i += 1
-            elif index == 13:
+            elif index == 14:
                 off_shifts, i = {}, 1
                 while row[i] != '':
                     off_shifts[row[i]] = shift_index
                     shift_index += 1
                     i += 1
-            elif index == 14:
-                week_days = [row[i] for i in range(1, 8)]
             elif index == 15:
+                week_days = [row[i] for i in range(1, 8)]
+            elif index == 16:
                 week_indices = [int(row[i]) for i in range(1, 8)]
-            elif index >= 16:
+            elif index >= 17:
                 shift_id = row[0]
                 end_reading = (shift_id == '')
                 if not end_reading:
@@ -168,7 +171,7 @@ def read_planning_data_from_csv(file_path):
                 needs_by_day[s] = needs_by_shifts[s][day]
             needs_by_days.append(needs_by_day)
         csv_file.close()
-    return (instance_id, budgeted_workforce, annual_hours_fix, annual_hours_var, partial_time_contracts_prop,
+    return (instance_id, year, budgeted_workforce, annual_hours_fix, annual_hours_var, partial_time_contracts_prop,
             eighty_percent_contracts_prop, contracts_type, contracts_ratios, contracts_costs, contracts_availability,
             contracts_affected, day_shifts, night_shifts, off_shifts, week_days, week_indices, needs_by_days,
             shift_beginning_times, shift_completion_times, shift_durations, shift_break_durations)
