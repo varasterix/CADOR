@@ -61,7 +61,7 @@ def read_team_composition_data_from_csv(file_path):
         reader = csv.reader(csv_file, delimiter=';')
         for index, row in enumerate(reader):
             if index == 0:
-                instance_id = int(row[1])
+                instance_id = row[1]  # type str
             elif index == 1:
                 budgeted_workforce = float(row[1])
             elif index == 2:
@@ -108,10 +108,10 @@ def read_team_composition_data_from_csv(file_path):
 
 def export_team_composition_results_as_csv(exportation_repository_path, instance_id, status, solving_time,
                                            contract_types, contract_ratios, workforce):
-    file_path = exportation_repository_path + "team_composition_" + str(instance_id) + ".csv"
+    file_path = exportation_repository_path + "team_composition_" + instance_id + ".csv"
     with open(file_path, 'w+') as csv_file:
         writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
-        instance_row = ['instance_id', str(instance_id)]
+        instance_row = ['instance_id', instance_id]
         time_row = ['solving_time', str(solving_time)]
         status_row = ['status', status]
         all_rows = [instance_row, time_row, status_row]
@@ -124,7 +124,7 @@ def export_team_composition_results_as_csv(exportation_repository_path, instance
 
 
 def read_team_composition_results(exportation_repository_path, instance_id):
-    file_path = exportation_repository_path + "team_composition_" + str(instance_id) + ".csv"
+    file_path = exportation_repository_path + "team_composition_" + instance_id + ".csv"
     with open(file_path, 'r') as csv_file:
         reader = csv.reader(csv_file, delimiter=';')
         for index, row in enumerate(reader):
@@ -170,7 +170,7 @@ def read_planning_data_from_csv(file_path):
         reader = csv.reader(csv_file, delimiter=';')
         for index, row in enumerate(reader):
             if index == 0:
-                instance_id = int(row[1])
+                instance_id = row[1]  # type str
             elif index == 1:
                 budgeted_workforce = float(row[1])
             elif index == 2:
@@ -239,10 +239,10 @@ def read_planning_data_from_csv(file_path):
 
 def export_work_cycles_results_as_csv(exportation_repository_path, instance_id, status, solving_time,
                                       contract_ratios, week_days, work_cycles):
-    file_path = exportation_repository_path + "work_cycles_" + str(instance_id) + ".csv"
+    file_path = exportation_repository_path + "work_cycles_" + instance_id + ".csv"
     with open(file_path, 'w+') as csv_file:
         writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
-        instance_row = ['instance_id', str(instance_id)]
+        instance_row = ['instance_id', instance_id]
         time_row = ['solving_time', str(solving_time)]
         status_row = ['status', status]
         all_rows = [instance_row, time_row, status_row]
