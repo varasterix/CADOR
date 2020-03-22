@@ -37,75 +37,6 @@ def read_needs_from_csv(file_path, row_index=0, column_index=0):
     return needs_by_days, shifts
 
 
-def read_team_composition_data_from_csv(file_path):
-    """
-    Note: The team composition csv data file has to respect a special format
-    :param file_path: path of the file containing the team composition data
-    :return:    - instance id of the team composition data
-                - budgeted workforce
-                - proportion of partial time contracts
-                - proportion of 80% contracts in total partial contracts
-                - types of contracts
-                - ratio of each type of contract
-                - cost of each type of contract
-                - availability for every type of contract
-                - number of employees already affected for each type of contract
-                - day codes (str) of the days of a week
-                - indices (int) of the days of a week
-                - workforce needs for every shifts of every day in week
-    """
-    shifts = {}
-    shift_index = 0
-    needs_by_shifts = {}
-    with open(file_path, 'r') as csv_file:
-        reader = csv.reader(csv_file, delimiter=';')
-        for index, row in enumerate(reader):
-            if index == 0:
-                instance_id = row[1]  # type str
-            elif index == 1:
-                budgeted_workforce = float(row[1])
-            elif index == 2:
-                partial_time_contracts_prop = float(row[1])
-            elif index == 3:
-                eighty_percent_contracts_prop = float(row[1])
-            elif index == 4:
-                contracts_type = [int(row[i]) for i in range(1, 8)]
-            elif index == 5:
-                contracts_ratios = [float(row[i]) for i in range(1, 8)]
-            elif index == 6:
-                contracts_costs = [float(row[i]) for i in range(1, 8)]
-            elif index == 7:
-                contracts_availability = [int(row[i]) for i in range(1, 8)]
-            elif index == 8:
-                contracts_affected = [int(row[i]) for i in range(1, 8)]
-            elif index == 9:
-                week_days = [row[i] for i in range(1, 8)]
-            elif index == 10:
-                week_indices = [int(row[i]) for i in range(1, 8)]
-            elif index >= 11:
-                shift_id = row[0]
-                end_reading = (shift_id == '')
-                if not end_reading:
-                    needs_by_shift = {}
-                    for j, day in enumerate(week_days):
-                        needs_by_shift[day] = int(row[j + 1])
-                    shifts[shift_id] = shift_index
-                    needs_by_shifts[shift_id] = needs_by_shift
-                    shift_index += 1
-                else:
-                    break
-        needs_by_days = []
-        for day in week_days:
-            needs_by_day = {}
-            for s in shifts:
-                needs_by_day[s] = needs_by_shifts[s][day]
-            needs_by_days.append(needs_by_day)
-        csv_file.close()
-    return (instance_id, budgeted_workforce, partial_time_contracts_prop, eighty_percent_contracts_prop,
-            contracts_type, contracts_ratios, contracts_costs, contracts_availability, contracts_affected, week_days,
-            week_indices, needs_by_days)
-
-
 def export_team_composition_results_as_csv(exportation_repository_path, instance_id, status, solving_time,
                                            contract_types, contract_ratios, workforce):
     file_path = exportation_repository_path + "team_composition_" + instance_id + ".csv"
@@ -145,6 +76,8 @@ def read_planning_data_from_csv(file_path):
     :param file_path: path of the file containing the planning data
     :return:    - instance id of the team composition data
                 - budgeted workforce
+                - number of annual working hours for workforce in FIXED rest (for day and night shifts)
+                - number of annual working hours for workforce in VARIABLE rest (for day and night shifts)
                 - proportion of partial time contracts
                 - proportion of 80% contracts in total partial contracts
                 - types of contracts
@@ -174,42 +107,46 @@ def read_planning_data_from_csv(file_path):
             elif index == 1:
                 budgeted_workforce = float(row[1])
             elif index == 2:
-                partial_time_contracts_prop = float(row[1])
+                annual_hours_fix = {'day': int(row[1]), 'night': int(row[2])}
             elif index == 3:
-                eighty_percent_contracts_prop = float(row[1])
+                annual_hours_var = {'day': int(row[1]), 'night': int(row[2])}
             elif index == 4:
-                contracts_type = [int(row[i]) for i in range(1, 8)]
+                partial_time_contracts_prop = float(row[1])
             elif index == 5:
-                contracts_ratios = [float(row[i]) for i in range(1, 8)]
+                eighty_percent_contracts_prop = float(row[1])
             elif index == 6:
-                contracts_costs = [float(row[i]) for i in range(1, 8)]
+                contracts_type = [int(row[i]) for i in range(1, 8)]
             elif index == 7:
-                contracts_availability = [int(row[i]) for i in range(1, 8)]
+                contracts_ratios = [float(row[i]) for i in range(1, 8)]
             elif index == 8:
-                contracts_affected = [int(row[i]) for i in range(1, 8)]
+                contracts_costs = [float(row[i]) for i in range(1, 8)]
             elif index == 9:
+                contracts_availability = [int(row[i]) for i in range(1, 8)]
+            elif index == 10:
+                contracts_affected = [int(row[i]) for i in range(1, 8)]
+            elif index == 11:
                 day_shifts, i = {}, 1
                 while row[i] != '':
                     day_shifts[row[i]] = shift_index
                     shift_index += 1
                     i += 1
-            elif index == 10:
+            elif index == 12:
                 night_shifts, i = {}, 1
                 while row[i] != '':
                     night_shifts[row[i]] = shift_index
                     shift_index += 1
                     i += 1
-            elif index == 11:
+            elif index == 13:
                 off_shifts, i = {}, 1
                 while row[i] != '':
                     off_shifts[row[i]] = shift_index
                     shift_index += 1
                     i += 1
-            elif index == 12:
+            elif index == 14:
                 week_days = [row[i] for i in range(1, 8)]
-            elif index == 13:
+            elif index == 15:
                 week_indices = [int(row[i]) for i in range(1, 8)]
-            elif index >= 14:
+            elif index >= 16:
                 shift_id = row[0]
                 end_reading = (shift_id == '')
                 if not end_reading:
@@ -231,10 +168,10 @@ def read_planning_data_from_csv(file_path):
                 needs_by_day[s] = needs_by_shifts[s][day]
             needs_by_days.append(needs_by_day)
         csv_file.close()
-    return (instance_id, budgeted_workforce, partial_time_contracts_prop, eighty_percent_contracts_prop,
-            contracts_type, contracts_ratios, contracts_costs, contracts_availability, contracts_affected, day_shifts,
-            night_shifts, off_shifts, week_days, week_indices, needs_by_days, shift_beginning_times,
-            shift_completion_times, shift_durations, shift_break_durations)
+    return (instance_id, budgeted_workforce, annual_hours_fix, annual_hours_var, partial_time_contracts_prop,
+            eighty_percent_contracts_prop, contracts_type, contracts_ratios, contracts_costs, contracts_availability,
+            contracts_affected, day_shifts, night_shifts, off_shifts, week_days, week_indices, needs_by_days,
+            shift_beginning_times, shift_completion_times, shift_durations, shift_break_durations)
 
 
 def export_work_cycles_results_as_csv(exportation_repository_path, instance_id, status, solving_time,
