@@ -60,7 +60,7 @@ for s in Work_Shifts:
 # Constraint 1.b: only one shift per day per person
 for r in range(len(T)):
     for e_r in range(Eff[r]):
-        for j in range(len(Week) * HC_r[r]):
+        for j in range(len(Week) * HC):
             cador += lpSum([X[i][j][r][e_r] for i in range(len(Shifts))]) == 1
 
 # Constraint 1.c: no single work day
@@ -164,8 +164,8 @@ solving_time = time.time() - start_time
 if export_results:
     if LpStatus[status] == 'Optimal':
         OrderedShifts = [s for s in sorted(Shifts.items(), key=lambda shift: shift[1])]
-        work_cycles = [[[OrderedShifts[[int(value(X[i][j][r][e_r])) for i in range(len(Shifts))].index(1)]
-                         for j in range(1, len(Week) * HC + 1)] for e_r in range(Eff[r])] for r in range(len(T))]
+        work_cycles = [[[OrderedShifts[[int(value(X[i][j][r][e_r])) for i in range(len(Shifts))].index(1)][0]
+                         for j in range(len(Week) * HC)] for e_r in range(Eff[r])] for r in range(len(T))]
         export_work_cycles_results_as_csv(exportation_path, instance_id, LpStatus[status], solving_time,
                                           ratios, week_days, work_cycles)
     else:
