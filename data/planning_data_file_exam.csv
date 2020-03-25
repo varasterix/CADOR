@@ -1,6 +1,6 @@
 instance_id;exam;;;;;;;;;;
-year;2020;;;;;;;;;;
-budgeted_workforce;;;;;;;;;;;
+year;2021;;;;;;;;;;
+budgeted_workforce;11.75;;;;;;;;;;
 annual_hours_fix;1575;1466;;;;;;;;;
 annual_hours_var;1545;1452;;;;;;;;;
 partial_time_contracts_prop;0.3;;;;;;;;;;
