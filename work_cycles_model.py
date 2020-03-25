@@ -27,12 +27,16 @@ HC = int(np.lcm.reduce(list(filter(lambda hc: hc > 0, HC_r))))
 X = [[[[LpVariable("x" + str(i) + "_" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
         for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
      for i in range(len(Shifts))]
+
 t = [[[LpVariable("t" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
        for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
 c = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInteger)
        for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
 rest = [[[LpVariable("r" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
           for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
+# y[j][e1] = 1 if the shift is "Repos" for the day j and the day j + 1 for the full time agent e1, 0 otherwise
+y = [[LpVariable("y" + str(j) + "_" + str(e1), 0, 1, cat=LpInteger) for e1 in range(Eff[0])]
+     for j in range(1, len(Week) * HC_r[0])]
 
 # Problem
 cador = LpProblem("CADOR", LpMinimize)
@@ -141,19 +145,26 @@ for r in range(len(T)):
 # for r in range(len(T)):
 #     for e_r in range(Eff[r]):
 #         for j in range(1, len(Week) * HC_r[r] - 5):
-#             cador += lpSum([rest[j + k][e_r][r] * ((24 - c[j + k - 1][e_r][r]) + t[j + k + 1][e_r][r] >= (36 - 24))
-#                             + (24 + t[j + k][e_r][r] - c[j + k - 1][e_r][r] >= 36) for k in range(5)]) \
-#                      + (24 + t[j + 5][e_r][r] - c[j + 4][e_r][r] >= 36) >= 1
+#             cador += lpSum([rest[j + k][r][e_r] * ((24 - c[j + k - 1][r][e_r]) + t[j + k + 1][r][e_r] >= (36 - 24))
+#                             + (24 + t[j + k][r][e_r] - c[j + k - 1][r][e_r] >= 36) for k in range(5)]) \
+#                      + (24 + t[j + 5][r][e_r] - c[j + 4][r][e_r] >= 36) >= 1
 
-# Constraint 2.b.iii: at least 4 days, in which 2 successive days including a sunday of break within each fortnight for
-# full time contracts
+# Constraint 2.b.iii:
+# at least 4 days, in which 2 successive days including a sunday of break within each fortnight for full time contracts
+for e1 in range(Eff[0]):
+    for j in range(len(Week) * HC_r[0] - 1):
+        cador += y[j][e1] <= X[Shifts["Repos"]][j][0][e1]
+        cador += y[j][e1] <= X[Shifts["Repos"]][j + 1][0][e1]
+        cador += y[j][e1] >= X[Shifts["Repos"]][j][0][e1] + X[Shifts["Repos"]][j + 1][0][e1] - 1
 for e1 in range(Eff[0]):
     for j in range(len(Week) * (HC_r[0] - 2) + 1):
+        # First part of constraint 2.b.iii
         cador += lpSum([X[Shifts["Repos"]][j + k][0][e1] for k in range(2 * len(Week))]) >= 4
-        # cador += lpSum([X[Shifts["Repos"]][j + 2 * k][0][e1] + X[Shifts["Repos"]][j + 2 * k + 1][0][e1] == 2
-        #                for k in range(len(Week))]) >= 1
+        # Second part of constraint 2.b.iii
+        cador += lpSum([y[j + k][e1] for k in range(2 * len(Week) - 1)]) >= 1
+        # Third part of constraint 2.b.iii
         cador += lpSum([X[Shifts["Repos"]][j + k][0][e1] for k in range(2 * len(Week))
-                        if (j + k) % len(Week) == 6]) >= 1
+                       if (j + k) % len(Week) == 6]) >= 1
 
 # Soft constraints
 
