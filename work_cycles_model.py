@@ -41,7 +41,7 @@ cador = LpProblem("CADOR", LpMinimize)
 
 # Hard Constraints
 
-# Constraint 0: repetition of the patterns for each type of contract
+# Constraint 0.a: repetition of the cycle patterns for each type of contract
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for i in range(len(Shifts)):
@@ -49,6 +49,16 @@ for r in range(len(T)):
                 if HC_r[r] != HC and HC_r[r] > 0:
                     for k in range(1, HC // HC_r[r]):
                         cador += X[i][j][r][e_r] == X[i][j + k * HC_r[r] * len(Week)][r][e_r]
+
+# Constraint 0.b: rotation of the week patterns between agents with the same type of contract through a cycle
+# TODO: to add in the doc
+for r in range(len(T)):
+    for e_r in range(Eff[r]):
+        for i in range(len(Shifts)):
+            for j in Week:
+                for k in range(1, HC_r[r]):
+                    cador += X[i][j][r][e_r] \
+                             == X[i][(j + k * len(Week)) % (HC_r[r] * len(Week))][r][(e_r - k) % HC_r[r]]
 
 # Constraint 1.a: respect of needs
 for s in Work_Shifts:
@@ -88,16 +98,16 @@ for r in range(len(T)):
 # Constraint 2.a.i: working time per week (non-sliding) may not exceed 45 hours
 for r in range(len(T)):
     for e_r in range(Eff[r]):
-        for q in range(HC_r[r]):
-            cador += lpSum([lpSum([X[Shifts[s]][q * len(Week) + k][r][e_r] * duration_D[s]
-                                   for k in range(len(Week))]) for s in Work_Shifts]) <= 45
+        for k in range(HC_r[r]):
+            cador += lpSum([lpSum([X[Shifts[s]][k * len(Week) + j][r][e_r] * duration_D[s]
+                                   for j in Week]) for s in Work_Shifts]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in range(len(T)):
     for e_r in range(Eff[r]):
-        for j in range(len(Week) * (e_r - 1) + 1):
+        for j in range(len(Week) * (HC_r[r] - 1) + 1):
             cador += lpSum([lpSum([X[Shifts[s]][j + k][r][e_r] * duration_D[s]
-                                   for k in range(7)]) for s in Work_Shifts]) <= 48
+                                   for k in Week]) for s in Work_Shifts]) <= 48
 
 # Constraints 2.b:
 
@@ -118,16 +128,16 @@ for r in range(len(T)):
 # Constraint 2.b.ooo: definition of the variables r (rest/off day or not)
 for r in range(len(T)):
     for e_r in range(Eff[r]):
-        for j in range(len(Week) * HC_r[r]):
+        for j in range(len(Week) * HC_r[r]):  # TODO len(Week) * HC like the variable definition ?
             cador += rest[j][r][e_r] == 1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts])
 
 # Constraint 2.b.i: minimum daily rest time of 12 hours
 for r in range(len(T)):
     for e_r in range(Eff[r]):
-        for j in range(len(Week) * HC_r[r]):
-            cador += (24 + t[j][r][e_r]) + c[j][r][e_r] <= 12
+        for j in range(1, len(Week) * HC_r[r] - 1):
+            cador += (24 + t[j][r][e_r]) + c[j - 1][r][e_r] >= 12
 
-# Constraint 2.b.ii: minimum of 36 consecutive hours for weekly rest (sliding)
+# Constraint 2.b.ii: minimum of 36 consecutive hours for weekly rest (sliding)  # TODO [i][j][r][e_r]
 # for r in range(len(T)):
 #     for e_r in range(Eff[r]):
 #         for j in range(1, len(Week) * HC_r[r] - 5):
@@ -140,9 +150,10 @@ for r in range(len(T)):
 for e1 in range(Eff[0]):
     for j in range(len(Week) * (HC_r[0] - 2) + 1):
         cador += lpSum([X[Shifts["Repos"]][j + k][0][e1] for k in range(2 * len(Week))]) >= 4
-        cador += lpSum([X[Shifts["Repos"]][j + 2 * k][0][e1] == X[Shifts["Repos"]][j + 2 * k + 1][0][e1]
-                        for k in range(len(Week))]) >= 1
-        cador += lpSum([X[Shifts["Repos"]][j + k][0][e1] for k in range(2 * len(Week)) if j + k == 6]) >= 1
+        # cador += lpSum([X[Shifts["Repos"]][j + 2 * k][0][e1] + X[Shifts["Repos"]][j + 2 * k + 1][0][e1] == 2
+        #                for k in range(len(Week))]) >= 1
+        cador += lpSum([X[Shifts["Repos"]][j + k][0][e1] for k in range(2 * len(Week))
+                        if (j + k) % len(Week) == 6]) >= 1
 
 # Soft constraints
 
