@@ -222,6 +222,12 @@ for r in range(len(T)):
 # Constraint 2.a.ii:
 # Constraint 2.b:
 # Constraint 3.a:
+for r in range(len(T)):
+    for e_r in range(Eff[r]):
+        for i in range(len(Shifts)):
+            for j in range(HC-1):
+                cador += X[i][j+4][r][e_r] + X[i][j+5][r][e_r] + X[i][j+7][r][e_r] <= 2
+            cador += X[i][HC*len(Week)-3][r][e_r] + X[i][HC*len(Week)-2][r][e_r] + X[i][0][r][e_r] <= 2
 
 # Target Function
 cador += 1
