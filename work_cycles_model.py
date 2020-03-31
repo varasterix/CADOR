@@ -213,6 +213,9 @@ for j in range(len(Week) * HC):
     cador += lpSum([lpSum([X[Shifts[JCA]][j][r][e_r] for e_r in range(Eff[r])]) for r in range(len(T))]) \
              >= 0.2 * lpSum([Eff[r] for r in range(len(T))])
 
+# Constraint 2.a.i :
+
+
 # Target Function
 cador += 1
 
