@@ -6,7 +6,7 @@ from src.workforce import compute_required_workforce_details, compute_required_w
 class TestWorkforce(unittest.TestCase):
     def test_compute_required_workforce_details(self):
         instance_id, y, bw, annual_h_fix, annual_h_var, pp, p80, t, ratios, costs, av, aff, day_shifts, night_shifts, \
-            off_shifts, week_days, week_indices, n, beginning_times, completion_times, durations, break_durations = \
+            week_days, week_indices, n, beginning_times, completion_times, durations, break_durations = \
             read_planning_data_from_csv("test/planning_data_file_test.csv")
         fter_day, fter_night, on_fixed_rest_day, on_fixed_rest_night = \
             compute_required_workforce_details(n, day_shifts, night_shifts, durations, break_durations, annual_h_fix,
@@ -18,7 +18,7 @@ class TestWorkforce(unittest.TestCase):
 
     def test_compute_required_workforce(self):
         instance_id, y, bw, annual_h_fix, annual_h_var, pp, p80, t, ratios, costs, av, aff, day_shifts, night_shifts, \
-            off_shifts, week_days, week_indices, n, beginning_times, completion_times, durations, break_durations = \
+            week_days, week_indices, n, beginning_times, completion_times, durations, break_durations = \
             read_planning_data_from_csv("test/planning_data_file_test.csv")
         fter = compute_required_workforce(n, day_shifts, night_shifts, durations, break_durations, annual_h_fix,
                                           annual_h_var, week_indices, year=y)

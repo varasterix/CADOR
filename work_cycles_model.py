@@ -1,7 +1,8 @@
 from pulp import *
 import time
 import numpy as np
-from src.utils import read_planning_data_from_csv, export_work_cycles_results_as_csv, read_team_composition_results
+from src.utils import *
+from src.constants import JCA_key as JCA, REPOS_key as REPOS
 
 # Loading planning csv data file
 planning_data_file_path = sys.argv[1]
@@ -10,12 +11,14 @@ export_results = bool(int(sys.argv[3]))
 
 # Loading Parameters + Instance dependant Parameters
 instance_id, year, bw, annual_hours_fix, annual_hours_var, Pp, P80, T, ratios, costs, A, a, Day_Shifts, Night_Shifts, \
-    Off_Shifts, week_days, Week, N, beginningTime_t, completionTime_c, duration_D, breakDuration = \
+    week_days, Week, N, beginningTime_t, completionTime_c, duration_D, breakDuration = \
     read_planning_data_from_csv(planning_data_file_path)
 Eff = read_team_composition_results(exportation_path, instance_id)  # team composition
 
-Work_Shifts = {**Night_Shifts, **Day_Shifts}  # all types of work shifts
-Shifts = {**Night_Shifts, **Day_Shifts, **Off_Shifts}  # all types of shifts
+number_of_shifts = len(Day_Shifts) + len(Night_Shifts)
+Work_Shifts = {**Night_Shifts, **Day_Shifts}  # all types of work shifts with special needs
+Work_Shifts_And_Jca = {**Work_Shifts, JCA: number_of_shifts}  # all types of work shifts + Jca
+Shifts = {**Work_Shifts_And_Jca, REPOS: number_of_shifts + 1}  # all types of shifts (including the off/rest shift)
 
 # Work cycles length (not a variable in this model)
 HC_r = [eff for eff in Eff]
@@ -34,7 +37,7 @@ c = [[[LpVariable("c" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 48, cat=LpInt
        for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
 rest = [[[LpVariable("r" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
           for e_r in range(Eff[r])] for r in range(len(T))] for j in range(1, len(Week) * HC + 1)]
-# y[j][e1] = 1 if the shift is "Repos" for the day j and the day j + 1 for the full time agent e1, 0 otherwise
+# y[j][e1] = 1 if the shift is REPOS for the day j and the day j + 1 for the full time agent e1, 0 otherwise
 y = [[LpVariable("y" + str(j) + "_" + str(e1), 0, 1, cat=LpInteger) for e1 in range(Eff[0])]
      for j in range(1, len(Week) * HC_r[0])]
 # w[r][e_r][j] = 1 if (24 - c[j][r][e_r] + t[j + 2][r][e_r] >= (36 - 24)), 0 otherwise (for constraint 2.b.ii)
@@ -53,7 +56,7 @@ epsilon = 0.001
 cador = LpProblem("CADOR", LpMinimize)
 
 # Constraints
-
+# TODO : update constraints in the doc (0.b, 2.a.i, 2.a.ii, ...)
 # Hard Constraints
 
 # Constraint 0.a: repetition of the cycle patterns for each type of contract
@@ -92,18 +95,18 @@ for r in range(len(T)):
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] - 2):
-            cador += lpSum([X[Shifts[s]][j + 1][r][e_r] for s in Work_Shifts]) <= \
-                     lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts]) + \
-                     lpSum([X[Shifts[s]][j + 2][r][e_r] for s in Work_Shifts])
+            cador += lpSum([X[Shifts[s]][j + 1][r][e_r] for s in Work_Shifts_And_Jca]) <= \
+                     lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts_And_Jca]) + \
+                     lpSum([X[Shifts[s]][j + 2][r][e_r] for s in Work_Shifts_And_Jca])
 
 # Constraint 1.d: maximum of 5 consecutive days of work
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for j in range(len(Week) * HC_r[r] - 5):
             cador += lpSum([lpSum([X[Shifts[s]][j + k][r][e_r]
-                                   for s in Work_Shifts]) for k in range(6)]) <= 5
+                                   for s in Work_Shifts_And_Jca]) for k in range(6)]) <= 5
 
-# Constraint 1.e: same shift on Saturdays and Sundays
+# Constraint 1.e: same shift on Saturdays and Sundays # TODO: just full time agent ?
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for s in Work_Shifts:
@@ -115,25 +118,27 @@ for r in range(len(T)):
     for e_r in range(Eff[r]):
         for k in range(HC_r[r]):
             cador += lpSum([lpSum([X[Shifts[s]][k * len(Week) + j][r][e_r] * duration_D[s]
-                                   for j in Week]) for s in Work_Shifts]) <= 45
+                                   for j in Week]) for s in Work_Shifts]) \
+                    + lpSum([X[Shifts[JCA]][k * len(Week) + j][r][e_r] * 8 for j in Week]) <= 45
 
 # Constraint 2.a.ii: employees cannot work more than 48h within 7 sliding days
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for j in range(len(Week) * (HC_r[r] - 1) + 1):
             cador += lpSum([lpSum([X[Shifts[s]][j + k][r][e_r] * duration_D[s]
-                                   for k in Week]) for s in Work_Shifts]) <= 48
+                                   for k in range(len(Week))]) for s in Work_Shifts]) \
+                     + lpSum([X[Shifts[JCA]][j + k][r][e_r] * 8 for k in range(len(Week))]) <= 48
 
 # Constraints 2.b:
 
-# Constraint 2.b.o: definition of the variables t (beginning time)
+# Constraint 2.b.o: definition of the variables t (beginning time)  # todo : JCA ?
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for j in range(len(Week) * HC):
             cador += t[j][r][e_r] == lpSum([beginningTime_t[s] * X[Shifts[s]][j][r][e_r] for s in Work_Shifts]) \
                      + 24 * (1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts]))
 
-# Constraint 2.b.oo: definition of the variables c (completion time)
+# Constraint 2.b.oo: definition of the variables c (completion time)  # todo : JCA ?
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for j in range(len(Week) * HC):
@@ -144,7 +149,7 @@ for r in range(len(T)):
 for r in range(len(T)):
     for e_r in range(Eff[r]):
         for j in range(len(Week) * HC):
-            cador += rest[j][r][e_r] == 1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts])
+            cador += rest[j][r][e_r] == 1 - lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts_And_Jca])
 
 # Constraint 2.b.i: minimum daily rest time of 12 hours
 for r in range(len(T)):
@@ -168,30 +173,45 @@ for r in range(len(T)):
     for e_r in range(Eff[r]):
         for j in range(1, len(Week) * HC_r[r] - 5):
             cador += lpSum([z[r][e_r][j - 1 + k] + v[r][e_r][j - 1 + k] for k in range(5)]) + v[r][e_r][j + 4] >= 1
-
+"""
 # Constraint 2.b.iii:
 # at least 4 days, in which 2 successive days including a sunday of break within each fortnight for full time contracts
 for e1 in range(Eff[0]):
     for j in range(len(Week) * HC_r[0] - 1):
-        cador += y[j][e1] <= X[Shifts["Repos"]][j][0][e1]
-        cador += y[j][e1] <= X[Shifts["Repos"]][j + 1][0][e1]
-        cador += y[j][e1] >= X[Shifts["Repos"]][j][0][e1] + X[Shifts["Repos"]][j + 1][0][e1] - 1
+        cador += y[j][e1] <= X[Shifts[REPOS]][j][0][e1]
+        cador += y[j][e1] <= X[Shifts[REPOS]][j + 1][0][e1]
+        cador += y[j][e1] >= X[Shifts[REPOS]][j][0][e1] + X[Shifts[REPOS]][j + 1][0][e1] - 1
 for e1 in range(Eff[0]):
     for j in range(len(Week) * (HC_r[0] - 2) + 1):
         # First part of constraint 2.b.iii
-        cador += lpSum([X[Shifts["Repos"]][j + k][0][e1] for k in range(2 * len(Week))]) >= 4
+        cador += lpSum([X[Shifts[REPOS]][j + k][0][e1] for k in range(2 * len(Week))]) >= 4
         # Second part of constraint 2.b.iii
         cador += lpSum([y[j + k][e1] for k in range(2 * len(Week) - 1)]) >= 1
         # Third part of constraint 2.b.iii
-        cador += lpSum([X[Shifts["Repos"]][j + k][0][e1] for k in range(2 * len(Week))
+        cador += lpSum([X[Shifts[REPOS]][j + k][0][e1] for k in range(2 * len(Week))
                         if (j + k) % len(Week) == 6]) >= 1
+"""
+# Constraint 3.a: Respect of the working hours for each type of contracts
+for r in range(len(T)):
+    for e_r in range(Eff[r]):
+        cador += lpSum([lpSum([X[Shifts[s]][j][r][e_r] for j in range(HC * len(Week))])
+                        * (duration_D[s] - (0 if breakDuration[s] is None else breakDuration[s]))
+                        for s in Work_Shifts]) + \
+                 lpSum([X[Shifts[JCA]][j][r][e_r] * 7.5
+                        for j in range(HC * len(Week))]) >= 37.5 * HC * ratios[r]  # <=, == ?
+
+# Constraint 3.b: Respect of the number of working days for each type of contracts
+for r in range(len(T)):
+    for e_r in range(Eff[r]):
+        cador += lpSum([lpSum([X[Shifts[s]][j][r][e_r] for s in Work_Shifts_And_Jca])
+                        for j in range(HC * len(Week))]) >= 5 * HC * ratios[r]  # <=, == ?
 
 # Soft constraints
 
 # Constraint 1: number of Jca at least equals to 20% of total number of staff members
 for j in range(len(Week) * HC):
-    cador += lpSum([lpSum([X[Shifts["Jca"]][j][0][e_r] for e_r in range(Eff[r])]) for r in range(len(T))]) \
-             <= 0.2 * lpSum([lpSum([e_r for e_r in range(Eff[r])]) for r in range(len(T))])
+    cador += lpSum([lpSum([X[Shifts[JCA]][j][r][e_r] for e_r in range(Eff[r])]) for r in range(len(T))]) \
+             >= 0.2 * lpSum([Eff[r] for r in range(len(T))])
 
 # Target Function
 cador += 1
@@ -207,8 +227,9 @@ if export_results:
         OrderedShifts = [s for s in sorted(Shifts.items(), key=lambda shift: shift[1])]
         work_cycles = [[[OrderedShifts[[int(value(X[i][j][r][e_r])) for i in range(len(Shifts))].index(1)][0]
                          for j in range(len(Week) * HC)] for e_r in range(Eff[r])] for r in range(len(T))]
-        export_work_cycles_results_as_csv(exportation_path, instance_id, LpStatus[status], solving_time,
-                                          ratios, week_days, work_cycles)
+        export_work_cycles_results_as_csv(exportation_path, instance_id, LpStatus[status], solving_time, ratios,
+                                          week_days, Day_Shifts, Night_Shifts, duration_D, breakDuration, N,
+                                          work_cycles)
     else:
-        export_work_cycles_results_as_csv(exportation_path, instance_id, LpStatus[status], solving_time,
-                                          ratios, week_days, None)
+        export_work_cycles_results_as_csv(exportation_path, instance_id, LpStatus[status], solving_time, ratios,
+                                          week_days, Day_Shifts, Night_Shifts, duration_D, breakDuration, N, None)

@@ -11,7 +11,7 @@ export_results = bool(int(sys.argv[3]))
 
 # Parameters + Instance dependant Parameters
 instance_id, year, bw, annual_hours_fix, annual_hours_var, Pp, P80, T, ratios, costs, A, a, Day_Shifts, Night_Shifts, \
-    Off_Shifts, week_days, Week, N, beginningTime_t, completionTime_c, duration_D, breakDuration = \
+    week_days, Week, N, beginningTime_t, completionTime_c, duration_D, breakDuration = \
     read_planning_data_from_csv(planning_data_file_path)
 
 # Checking if a budgeted workforce is given. Otherwise, the budgeted workforce required is used.

@@ -1,4 +1,5 @@
 import csv
+from src.constants import JCA_key as JCA, REPOS_key as REPOS
 
 
 def read_needs_from_csv(file_path, row_index=0, column_index=0):
@@ -88,7 +89,6 @@ def read_planning_data_from_csv(file_path):
                 - number of employees already affected for each type of contract
                 - types of day shifts
                 - types of night shifts
-                - types of off shifts
                 - day codes (str) of the days of a week
                 - indices (int) of the days of a week
                 - workforce needs for every shifts of every day in a week
@@ -140,16 +140,10 @@ def read_planning_data_from_csv(file_path):
                     shift_index += 1
                     i += 1
             elif index == 14:
-                off_shifts, i = {}, 1
-                while row[i] != '':
-                    off_shifts[row[i]] = shift_index
-                    shift_index += 1
-                    i += 1
-            elif index == 15:
                 week_days = [row[i] for i in range(1, 8)]
-            elif index == 16:
+            elif index == 15:
                 week_indices = [int(row[i]) for i in range(1, 8)]
-            elif index >= 17:
+            elif index >= 16:
                 shift_id = row[0]
                 end_reading = (shift_id == '')
                 if not end_reading:
@@ -173,12 +167,13 @@ def read_planning_data_from_csv(file_path):
         csv_file.close()
     return (instance_id, year, budgeted_workforce, annual_hours_fix, annual_hours_var, partial_time_contracts_prop,
             eighty_percent_contracts_prop, contracts_type, contracts_ratios, contracts_costs, contracts_availability,
-            contracts_affected, day_shifts, night_shifts, off_shifts, week_days, week_indices, needs_by_days,
-            shift_beginning_times, shift_completion_times, shift_durations, shift_break_durations)
+            contracts_affected, day_shifts, night_shifts, week_days, week_indices, needs_by_days, shift_beginning_times,
+            shift_completion_times, shift_durations, shift_break_durations)
 
 
 def export_work_cycles_results_as_csv(exportation_repository_path, instance_id, status, solving_time,
-                                      contract_ratios, week_days, work_cycles):
+                                      contract_ratios, week_days, day_shifts, night_shifts, shift_durations,
+                                      shift_break_durations, needs_by_days, work_cycles):
     file_path = exportation_repository_path + "work_cycles_" + instance_id + ".csv"
     with open(file_path, 'w+') as csv_file:
         writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
@@ -187,6 +182,7 @@ def export_work_cycles_results_as_csv(exportation_repository_path, instance_id, 
         status_row = ['status', status]
         all_rows = [instance_row, time_row, status_row]
         if status == 'Optimal':
+            work_shifts_and_jca = {**day_shifts, **night_shifts, JCA: len(night_shifts) + len(day_shifts)}
             # Labels of the work cycles table
             horizon = len(work_cycles[0][0])
             nb_of_weeks = int(horizon / 7)
@@ -201,8 +197,62 @@ def export_work_cycles_results_as_csv(exportation_repository_path, instance_id, 
             agent = 1
             for r in range(len(work_cycles)):
                 for e_r in range(len(work_cycles[r])):
-                    row_r_er = [shift for shift in work_cycles[r][e_r]]
-                    all_rows.append([str(agent), str(int(contract_ratios[r] * 100)), ''] + row_r_er)
+                    agent_cat = get_agent_category(work_cycles[r][e_r], day_shifts, night_shifts)
+                    all_rows.append([str(agent), str(int(contract_ratios[r] * 100)), agent_cat] + work_cycles[r][e_r])
+                    agent += 1
+            # Work cycles analysis (needs)
+            shifts = list(shift for shift, i in sorted(work_shifts_and_jca.items(), key=lambda item: item[1]))
+            for s in shifts:
+                row_s = [sum([sum([int(work_cycles[r][e_r][j] == s) for e_r in range(len(work_cycles[r]))])
+                              for r in range(len(work_cycles))]) for j in range(horizon)]
+                all_rows.append(['Total ' + s, '', ''] + row_s)
+            all_rows.append([])
+            all_rows.append(['Rappel des besoins de la maquette'])
+            all_rows.append(3 * [''] + week_days)
+            for s in shifts:
+                if s != JCA:
+                    all_rows.append(['', '', s] + [needs_by_days[j][s] for j in range(len(week_days))])
+            # Work cycles analysis (shifts by agent)
+            all_rows.append([])
+            all_rows.append(['Resultats', 'Nombre de postes de travail effectues par chaque agent'])
+            all_rows.append(['Agent', '%'] + shifts + ['', 'T', 'D', 'Df'])
+            agent = 1
+            for r in range(len(work_cycles)):
+                for e_r in range(len(work_cycles[r])):
+                    row_r_er = [work_cycles[r][e_r].count(s) for s in shifts]
+                    hours_worked = sum([row_r_er[i] * (shift_durations[s] - (0 if shift_break_durations[s] is None
+                                                                             else shift_break_durations[s])
+                                                       if s != JCA else 7.5) for i, s in enumerate(shifts)])
+                    hours_expected = 37.5 * (horizon // len(week_days)) * contract_ratios[r]
+                    hours_gap = hours_expected - hours_worked
+                    all_rows.append([str(agent), str(int(contract_ratios[r] * 100))] + row_r_er +
+                                    ['', hours_worked, hours_expected, hours_gap])
+                    agent += 1
+            # Work cycles analysis (days of the week by agent)
+            all_rows.append([])
+            all_rows.append(['Resultats', 'Nombre de jours de la semaine travailles par agent'])
+            all_rows.append(['Agent', '%'] + week_days)  # Monday: 0, Tuesday: 1, ..., Sunday: 6
+            agent = 1
+            for r in range(len(work_cycles)):
+                for e_r in range(len(work_cycles[r])):
+                    row_r_er = [str(sum([int(work_cycles[r][e_r][i] != REPOS)
+                                         for i in range(horizon) if (i - day) % len(week_days) == 0]))
+                                for day in range(len(week_days))]
+                    all_rows.append([str(agent), str(int(contract_ratios[r] * 100))] + row_r_er)
                     agent += 1
         writer.writerows(all_rows)
     csv_file.close()
+
+
+def get_agent_category(work_cycles_r_er, day_shifts, night_shifts):
+    day_agent, night_agent = False, False
+    for s in {**day_shifts, JCA: len(day_shifts) + len(night_shifts)}:
+        if s in work_cycles_r_er:
+            day_agent = True
+            break
+    for s in night_shifts:
+        if s in work_cycles_r_er:
+            night_agent = True
+            break
+    return 'J/N' if day_agent and night_agent else \
+        ('J' if day_agent and not night_agent else ('N' if not day_agent and night_agent else ''))
