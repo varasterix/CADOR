@@ -213,8 +213,15 @@ for j in range(len(Week) * HC):
     cador += lpSum([lpSum([X[Shifts[JCA]][j][r][e_r] for e_r in range(Eff[r])]) for r in range(len(T))]) \
              >= 0.2 * lpSum([Eff[r] for r in range(len(T))])
 
-# Constraint 2.a.i :
+# Constraint 2.a.i: end work early before a day off
+for r in range(len(T)):
+    for e_r in range(Eff[r]):
+        for j in range(2, len(Week) * HC_r[r]):
+            cador += lpSum(X[Shifts[REPOS]][j][r][e_r] * c[j-1][r][e_r]) # minimize
 
+# Constraint 2.a.ii:
+# Constraint 2.b:
+# Constraint 3.a:
 
 # Target Function
 cador += 1
