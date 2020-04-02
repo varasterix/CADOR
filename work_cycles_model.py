@@ -43,11 +43,14 @@ y = [[LpVariable("y" + str(j) + "_" + str(e1), 0, 1, cat=LpInteger) for e1 in ra
 # w[r][e_r][j] = 1 if (24 - c[j][r][e_r] + t[j + 2][r][e_r] >= (36 - 24)), 0 otherwise (for constraint 2.b.ii)
 w = [[[LpVariable("w" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
        for j in range(1, len(Week) * HC_r[r] - 1)] for e_r in range(Eff[r])] for r in range(len(T))]
-# z[r][e_r][j] = rest[j + 1][r][e_r] * w[r][e_r][j] in {0,1} (for constraint 2.b.ii)
+# z[r][e_r][j] = rest[j + 1][r][e_r] * w[r][e_r][j] in {0, 1} (for constraint 2.b.ii)
 z = [[[LpVariable("z" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
        for j in range(1, len(Week) * HC_r[r] - 1)] for e_r in range(Eff[r])] for r in range(len(T))]
 # v[r][e_r][j] = 1 if (24 + t[j + 1][r][e_r] - c[j][r][e_r] >= 36), 0 otherwise (for constraint 2.b.ii)
 v = [[[LpVariable("v" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
+       for j in range(1, len(Week) * HC_r[r])] for e_r in range(Eff[r])] for r in range(len(T))]
+# u[r][e_r][j] = X[Shifts[REPOS]][j][r][e_r] * c[j-1][r][e_r] in {0, 1} (for soft constraint 2.a.i)
+u = [[[LpVariable("u" + str(j) + "_" + str(r) + "_" + str(e_r), 0, 1, cat=LpInteger)
        for j in range(1, len(Week) * HC_r[r])] for e_r in range(Eff[r])] for r in range(len(T))]
 M = 100000
 epsilon = 0.001
@@ -214,12 +217,14 @@ for j in range(len(Week) * HC):
              >= 0.2 * lpSum([Eff[r] for r in range(len(T))])
 
 # Constraint 2.a.i: end work early before a day off
-# TODO: linearize the constraint
 for r in range(len(T)):
     for e_r in range(Eff[r]):
-        for j in range(2, len(Week) * HC_r[r]):
-            # cador += lpSum(X[Shifts[REPOS]][j][r][e_r] * c[j-1][r][e_r])  # minimize
-            pass
+        for j in range(2, len(Week) * HC_r[r] - 1):
+            cador += u[r][e_r][j] <= X[Shifts[REPOS]][j][r][e_r]  # UB
+            cador += u[r][e_r][j] <= c[j-1][r][e_r]  # UB
+            cador += u[r][e_r][j] >= X[Shifts[REPOS]][j][r][e_r] + c[j-1][r][e_r] - 1  # LB
+
+            cador += lpSum(u[r][e_r][j])  # minimize
 
 # Constraint 2.a.ii:
 # Constraint 2.b:
@@ -234,7 +239,7 @@ for r in range(len(T)):
 # Target Function
 cador += 1
 
-# Solving
+# Soling
 start_time = time.time()
 cplex_path = "C:\\Program Files\\IBM\\ILOG\\CPLEX_Studio1210\\cplex\\bin\\x64_win64\\cplex.exe"
 status = cador.solve(CPLEX(path=cplex_path))
