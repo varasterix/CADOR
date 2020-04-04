@@ -1,26 +1,26 @@
 instance_id;exam
-solving_time;15.458069086074829
+solving_time;13806.980482339859
 status;Optimal
-Prenom;%;J/N;Semaine 1;;;;;;;Semaine 2;;;;;;;Semaine 3;;;;;;;Semaine 4;;;;;;;Semaine 5;;;;;;;Semaine 6;;;;;;;Semaine 7;;;;;;;Semaine 8;;;;;;;Semaine 9;;;;;;;Semaine 10;;;;;;;Semaine 11;;;;;;;Semaine 12;;;;;;;Semaine 13;;;;;;;Semaine 14;;;;;;;Semaine 15;;;;;;;Semaine 16;;;;;;;Semaine 17;;;;;;;Semaine 18;;;;;;
-Agent;%;J/N;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D
-1;100;J/N;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca
-2;100;J/N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N
-3;100;J/N;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M
-4;100;J/N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N
-5;100;J/N;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M
-6;100;J/N;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca
-7;100;J/N;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-
-8;100;J/N;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-
-9;100;J/N;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-;M;N;Jca;N;-;-;Jca;M;J;M;-;-;N;N;-;Jca;J;-;M;M;M;Jca;-;J;Jca;-;N;N;J;-;M;M;-;M;M;Jca;Jca;-;-;Jca;Jca;Jca;Jca;S;-;M;Jca;Jca;-;S;S;Jca;J;Jca;-;-;S;M;S;Jca;N;-;-
-10;80;J/N;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca;N;Jca;-;-;N;Jca;Jca
-11;75;J/N;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S;-;-;Jca;N;S;S;S
-12;60;J/N;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-
-13;60;J/N;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-;-;N;N;S;M;-;-;N;M;N;Jca;J;-;-
-Total M;;;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2
-Total J;;;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0;1;1;2;1;1;0;0
-Total S;;;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1;2;2;1;1;1;1;1
-Total N;;;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2
-Total Jca;;;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3;3
+Prenom;%;J/N;Semaine 1;;;;;;;Semaine 2;;;;;;;Semaine 3;;;;;;;Semaine 4;;;;;;;Semaine 5;;;;;;;Semaine 6;;;;;;;Semaine 7;;;;;;;Semaine 8;;;;;;;Semaine 9;;;;;;;Semaine 10;;;;;;;Semaine 11;;;;;;;Semaine 12;;;;;;;Semaine 13;;;;;;;Semaine 14;;;;;;;Semaine 15;;;;;;;Semaine 16;;;;;;;Semaine 17;;;;;;;Semaine 18;;;;;;;Semaine 19;;;;;;;Semaine 20;;;;;;;Semaine 21;;;;;;;Semaine 22;;;;;;;Semaine 23;;;;;;;Semaine 24;;;;;;
+Agent;%;J/N;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D;L;Ma;Me;J;V;S;D
+1;100;J/N;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-
+2;100;J/N;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M
+3;100;J/N;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-
+4;100;J/N;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S
+5;100;J/N;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-
+6;100;J/N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N
+7;100;J/N;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-
+8;100;J/N;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M;-;M;M;M;Jca;-;-;M;Jca;N;N;-;-;M;M;M;J;Jca;-;-;-;N;N;-;-;M;Jca;S;S;-;S;S;S;-;-;J;Jca;-;Jca;N;-;N;N;-;Jca;N;N;-;-;Jca;N;N;-;-;M;M
+9;80;J/N;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-
+10;80;J/N;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-
+11;80;J/N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N;-;-;-;J;M;M;-;Jca;S;-;-;J;N;-;-;-;M;Jca;-;N;N;-;-;-;J;Jca;N;-;-;J;Jca;-;Jca;N;-;-;J;Jca;-;-;Jca;N
+12;75;J;-;-;-;M;Jca;S;-;-;-;M;M;M;M;Jca;-;-;-;M;Jca;S;-;-;-;M;M;M;M;-;-;-;-;M;Jca;S;-;-;-;M;M;M;M;Jca;-;-;-;M;Jca;S;-;-;-;M;M;M;M;-;-;-;-;M;Jca;S;-;-;-;M;M;M;M;Jca;-;-;-;M;Jca;S;-;-;-;M;M;M;M;-;-;-;-;M;Jca;S;-;-;-;M;M;M;M;Jca;-;-;-;M;Jca;S;-;-;-;M;M;M;M;-;-;-;-;M;Jca;S;-;-;-;M;M;M;M;Jca;-;-;-;M;Jca;S;-;-;-;M;M;M;M;-;-;-;-;M;Jca;S;-;-;-;M;M;M;M;Jca;-;-;-;M;Jca;S;-;-;-;M;M;M;M;-
+13;60;J;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-;Jca;S;-;-;J;Jca;-;-;-;-;-;Jca;S;-
+Total M;;;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2
+Total J;;;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0;1;1;1;1;1;0;0
+Total S;;;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Total N;;;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2;2
+Total Jca;;;2;2;2;3;3;2;0;2;2;2;2;3;2;1;2;2;2;3;3;2;0;2;2;2;2;3;2;0;2;2;2;3;3;2;0;2;2;2;2;3;2;1;2;2;2;3;3;2;0;2;2;2;2;3;2;0;2;2;2;3;3;2;0;2;2;2;2;3;2;1;2;2;2;3;3;2;0;2;2;2;2;3;2;0;2;2;2;3;3;2;0;2;2;2;2;3;2;1;2;2;2;3;3;2;0;2;2;2;2;3;2;0;2;2;2;3;3;2;0;2;2;2;2;3;2;1;2;2;2;3;3;2;0;2;2;2;2;3;2;0;2;2;2;3;3;2;0;2;2;2;2;3;2;1;2;2;2;3;3;2;0;2;2;2;2;3;2;0
 
 Rappel des besoins de la maquette
 ;;;L;Ma;Me;J;V;S;D
@@ -29,34 +29,34 @@ Rappel des besoins de la maquette
 ;;S;1;1;1;1;1;1;1
 ;;N;2;2;2;2;2;2;2
 
-Resultats;Nombre de postes de travail effectues par chaque agent
-Agent;%;M;J;S;N;Jca;;T;D;Df
-1;100;24;10;10;14;32;;710.0;675.0;-35.0
-2;100;24;10;10;14;32;;710.0;675.0;-35.0
-3;100;24;10;10;14;32;;710.0;675.0;-35.0
-4;100;24;10;10;14;32;;710.0;675.0;-35.0
-5;100;24;10;10;14;32;;710.0;675.0;-35.0
-6;100;24;10;10;14;32;;710.0;675.0;-35.0
-7;100;24;10;10;14;32;;710.0;675.0;-35.0
-8;100;24;10;10;14;32;;710.0;675.0;-35.0
-9;100;24;10;10;14;32;;710.0;675.0;-35.0
-10;80;0;0;0;36;54;;765.0;540.0;-225.0
-11;75;0;0;54;18;18;;720.0;506.25;-213.75
-12;60;18;9;9;36;9;;697.5;405.0;-292.5
-13;60;18;9;9;36;9;;697.5;405.0;-292.5
+Resultats;Nombre de postes de travail effectues par chaque agent;;;;;;;;;;;Equite
+Agent;%;M;J;S;N;Jca;;T;D;Df;;%;M;J;S;N;Jca
+1;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+2;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+3;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+4;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+5;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+6;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+7;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+8;100;30;6;15;33;24;;892.5;900.0;7.5;;100;100%;100%;100%;100%;100%
+9;80;12;20;4;24;28;;720.0;720.0;0.0;;80;50%;417%;33%;91%;146%
+10;80;12;20;4;24;28;;720.0;720.0;0.0;;80;50%;417%;33%;91%;146%
+11;80;12;20;4;24;28;;720.0;720.0;0.0;;80;50%;417%;33%;91%;146%
+12;75;60;0;12;0;18;;675.0;675.0;0.0;;75;267%;0%;107%;0%;100%
+13;60;0;12;24;0;36;;540.0;540.0;0.0;;60;0%;333%;267%;0%;250%
 
 Resultats;Nombre de jours de la semaine travailles par agent
 Agent;%;L;Ma;Me;J;V;S;D
-1;100;16;14;14;12;10;12;12
-2;100;16;14;14;12;10;12;12
-3;100;16;14;14;12;10;12;12
-4;100;16;14;14;12;10;12;12
-5;100;16;14;14;12;10;12;12
-6;100;16;14;14;12;10;12;12
-7;100;16;14;14;12;10;12;12
-8;100;16;14;14;12;10;12;12
-9;100;16;14;14;12;10;12;12
-10;80;18;18;0;0;18;18;18
-11;75;0;0;18;18;18;18;18
-12;60;9;18;18;18;18;0;0
-13;60;9;18;18;18;18;0;0
+1;100;21;18;18;18;15;6;12
+2;100;21;18;18;18;15;6;12
+3;100;21;18;18;18;15;6;12
+4;100;21;18;18;18;15;6;12
+5;100;21;18;18;18;15;6;12
+6;100;21;18;18;18;15;6;12
+7;100;21;18;18;18;15;6;12
+8;100;21;18;18;18;15;6;12
+9;80;4;12;12;12;16;24;8
+10;80;4;12;12;12;16;24;8
+11;80;4;12;12;12;16;24;8
+12;75;0;0;12;24;24;24;6
+13;60;12;12;0;0;24;24;0

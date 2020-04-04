@@ -39,14 +39,15 @@ def read_needs_from_csv(file_path, row_index=0, column_index=0):
 
 
 def export_team_composition_results_as_csv(exportation_repository_path, instance_id, status, solving_time,
-                                           contract_types, contract_ratios, workforce):
+                                           contract_types, contract_ratios, workforce, total_cost):
     file_path = exportation_repository_path + "team_composition_" + instance_id + ".csv"
     with open(file_path, 'w+') as csv_file:
         writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
         instance_row = ['instance_id', instance_id]
         time_row = ['solving_time', str(solving_time)]
         status_row = ['status', status]
-        all_rows = [instance_row, time_row, status_row]
+        total_cost_row = ['total_cost', str(total_cost)]
+        all_rows = [instance_row, time_row, status_row, total_cost_row]
         if status == 'Optimal':
             all_rows.append([str(t) for t in contract_types])
             all_rows.append([str(r_t) for r_t in contract_ratios])
@@ -65,7 +66,7 @@ def read_team_composition_results(exportation_repository_path, instance_id):
                 if status != 'Optimal':
                     raise Exception('The status after solving the team composition ({}) phase is un-managed'
                                     .format(status))
-            elif index == 5:
+            elif index == 6:
                 workforce_by_contract_types = [int(w) for w in row if w != '']
     csv_file.close()
     return workforce_by_contract_types
@@ -214,19 +215,26 @@ def export_work_cycles_results_as_csv(exportation_repository_path, instance_id, 
                     all_rows.append(['', '', s] + [needs_by_days[j][s] for j in range(len(week_days))])
             # Work cycles analysis (shifts by agent)
             all_rows.append([])
-            all_rows.append(['Resultats', 'Nombre de postes de travail effectues par chaque agent'])
-            all_rows.append(['Agent', '%'] + shifts + ['', 'T', 'D', 'Df'])
+            all_rows.append(['Resultats', 'Nombre de postes de travail effectues par chaque agent']
+                            + (len(shifts) + 5) * [''] + ['Equite'])
+            all_rows.append(['Agent', '%'] + shifts + ['', 'T', 'D', 'Df', '', '%'] + shifts)
             agent = 1
+            row_r1_e1 = [work_cycles[0][0].count(s) for s in shifts]
             for r in range(len(work_cycles)):
                 for e_r in range(len(work_cycles[r])):
                     row_r_er = [work_cycles[r][e_r].count(s) for s in shifts]
                     hours_worked = sum([row_r_er[i] * (shift_durations[s] - (0 if shift_break_durations[s] is None
                                                                              else shift_break_durations[s])
                                                        if s != JCA else 7.5) for i, s in enumerate(shifts)])
+                    if row_r1_e1:
+                        equity_r_er = ['x' if ref == 0
+                                       else str(round(row_r_er[i] / (ref * contract_ratios[r]) * 100)) + '%'
+                                       for i, ref in enumerate(row_r1_e1)]
                     hours_expected = 37.5 * (horizon // len(week_days)) * contract_ratios[r]
                     hours_gap = hours_expected - hours_worked
                     all_rows.append([str(agent), str(int(contract_ratios[r] * 100))] + row_r_er +
-                                    ['', hours_worked, hours_expected, hours_gap])
+                                    ['', hours_worked, hours_expected, hours_gap] +
+                                    ['', str(int(contract_ratios[r] * 100))] + equity_r_er)
                     agent += 1
             # Work cycles analysis (days of the week by agent)
             all_rows.append([])
